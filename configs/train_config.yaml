@@ -1,0 +1,69 @@
+# ==============================================================================
+# Semiconductor Wafer Defect Detection - Training & Optimization Configuration
+# ==============================================================================
+
+# Hardware & Execution Environment
+execution:
+  device: "cuda"            # Will fallback to "cpu" if CUDA is unavailable
+  seed: 42
+  mixed_precision: true     # PyTorch Automatic Mixed Precision (torch.amp)
+  deterministic: true
+  benchmark: false
+
+# DataLoader Configuration
+dataloader:
+  batch_size: 64            # Safe batch size for 4GB VRAM
+  eval_batch_size: 128
+  num_workers: 2            # Safe for Windows multi-processing
+  pin_memory: true
+  drop_last: false
+
+# Optimization Parameters
+optimizer:
+  name: "AdamW"
+  learning_rate: 0.001
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  eps: 0.00000001
+
+# Learning Rate Scheduling
+scheduler:
+  name: "CosineAnnealingLR"
+  T_max: 30
+  eta_min: 0.000001
+  warmup_epochs: 2
+
+# Loss Function & Class Imbalance Mitigation
+loss:
+  selected: "focal_loss"    # Options: "cross_entropy", "weighted_cross_entropy", "focal_loss"
+  focal_loss:
+    gamma: 2.0              # Focusing parameter for hard examples
+    alpha: null             # Class weights or null
+  use_class_weights: true   # Compute inverse frequency weights dynamically
+  imbalance_sampling:
+    use_weighted_random_sampler: true  # Oversample minority defect classes
+
+# Training Epochs & Early Stopping
+training:
+  epochs: 30
+  early_stopping:
+    enabled: true
+    patience: 7
+    min_delta: 0.001
+    monitor_metric: "val_macro_f1"
+    mode: "max"
+
+# Evaluation Metrics
+metrics:
+  primary: "macro_f1"
+  additional:
+    - "balanced_accuracy"
+    - "per_class_recall"
+    - "confusion_matrix"
+
+# Checkpointing & Storage
+checkpointing:
+  checkpoint_dir: "models/checkpoints"
+  production_dir: "models/production"
+  save_best_only: true
+  model_filename: "best_model.pt"

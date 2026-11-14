@@ -1,0 +1,55 @@
+# ==============================================================================
+# Semiconductor Wafer Defect Detection - Model Architectures Configuration
+# ==============================================================================
+
+# Currently active model for training and evaluation
+active_model: "cnn_baseline"
+
+models:
+  # ----------------------------------------------------------------------------
+  # 1. Custom 4-Block CNN Baseline
+  # Lightweight, high-throughput model optimized for 4GB VRAM
+  # ----------------------------------------------------------------------------
+  cnn_baseline:
+    architecture: "CustomWaferCNN"
+    in_channels: 1
+    num_classes: 9
+    conv_blocks:
+      - out_channels: 32
+        kernel_size: 3
+        stride: 1
+        padding: 1
+        pool_size: 2
+      - out_channels: 64
+        kernel_size: 3
+        stride: 1
+        padding: 1
+        pool_size: 2
+      - out_channels: 128
+        kernel_size: 3
+        stride: 1
+        padding: 1
+        pool_size: 2
+      - out_channels: 256
+        kernel_size: 3
+        stride: 1
+        padding: 1
+        pool_size: 2
+    batch_norm: true
+    activation: "ReLU"
+    dropout_rate: 0.30
+    fc_dim: 256
+    target_gradcam_layer: "features.conv_block4"
+
+  # ----------------------------------------------------------------------------
+  # 2. Adapted ResNet-18
+  # Residual network adapted for wafer die maps and 9-class defect classification
+  # ----------------------------------------------------------------------------
+  resnet18:
+    architecture: "AdaptedResNet18"
+    in_channels: 3           # Replicated 1-channel or 3-channel die one-hot encoding
+    num_classes: 9
+    pretrained: false        # False for medical/die maps, or ImageNet weights for transfer
+    replace_first_conv: true # Replace 7x7 conv with 3x3 conv for 64x64 input resolution
+    dropout_rate: 0.40
+    target_gradcam_layer: "layer4"

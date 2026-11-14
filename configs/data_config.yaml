@@ -1,0 +1,77 @@
+# ==============================================================================
+# Semiconductor Wafer Defect Detection - Data Engineering Configuration
+# ==============================================================================
+
+dataset:
+  name: "WM-811K"
+  raw_file: "data/raw/LSWMD.pkl"
+  interim_dir: "data/interim"
+  processed_dir: "data/processed"
+  validation_report: "data/interim/dataset_validation_report.json"
+
+# Wafer die encoding standard in WM-811K
+die_encoding:
+  exterior: 0   # Space outside circular wafer boundary
+  normal: 1     # Electrically functional / non-defective die
+  defect: 2     # Defective die
+
+# Ground-truth failure pattern classes (9 classes)
+classes:
+  0: "none"
+  1: "Center"
+  2: "Donut"
+  3: "Edge-Loc"
+  4: "Edge-Ring"
+  5: "Loc"
+  6: "Random"
+  7: "Scratch"
+  8: "Near-full"
+
+# Target tensor resolution for deep learning models
+canonical_resolution:
+  height: 64
+  width: 64
+  channels: 1
+
+# Preprocessing Ablation Study Configurations
+preprocessing:
+  selected_method: "method_c"  # Recommended: Aspect-ratio preserving resize + zero padding
+
+  methods:
+    method_a:
+      name: "direct_resize"
+      description: "Direct nearest-neighbor resize without aspect-ratio preservation"
+      target_size: [64, 64]
+      interpolation: "nearest"
+
+    method_b:
+      name: "fixed_canvas_padding"
+      description: "Embed original wafer at canvas center with zero-padding"
+      canvas_size: [64, 64]
+      pad_value: 0
+      truncate_oversize: true
+
+    method_c:
+      name: "letterbox_padding"
+      description: "Nearest-neighbor resize longest edge, symmetric zero-padding on shorter edge"
+      target_size: [64, 64]
+      pad_value: 0
+      interpolation: "nearest"
+
+# Stratified Group-Aware Splitting (Zero Lot Leakage Strategy)
+splitting:
+  group_column: "lotName"
+  target_column: "failureType"
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  k_folds: 5
+  random_state: 42
+  shuffle: true
+
+# Domain-Specific Data Augmentations
+augmentation:
+  random_horizontal_flip_prob: 0.5
+  random_vertical_flip_prob: 0.5
+  random_rotation_90_prob: 0.5
+  die_noise_prob: 0.02

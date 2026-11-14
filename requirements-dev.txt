@@ -1,0 +1,21 @@
+# ==============================================================================
+# Semiconductor Wafer Defect Detection - Development & Testing Dependencies
+# ==============================================================================
+
+# Include core runtime requirements
+-r requirements.txt
+
+# Automated Testing & Coverage Reporting
+pytest>=8.3.2
+pytest-cov>=5.0.0
+
+# Code Quality: Linting, Formatting, and Type Checking
+ruff>=0.6.2
+mypy>=1.11.2
+
+# Exploratory Prototyping & Jupyter Notebook Kernel
+ipykernel>=6.29.5
+jupyter>=1.0.0
+
+# Git Hooks Automation
+pre-commit>=3.8.0

@@ -1,0 +1,92 @@
+# ==============================================================================
+# Semiconductor Wafer Defect Detection - Controlled Imbalance Experiments
+# ==============================================================================
+# Four independent experiments designed to isolate the impact of each imbalance
+# mitigation technique against identical baseline conditions.
+
+baseline_shared:
+  seed: 42
+  batch_size: 64
+  eval_batch_size: 128
+  epochs: 30
+  early_stopping_patience: 7
+  optimizer: "AdamW"
+  learning_rate: 0.001
+  weight_decay: 0.01
+  scheduler: "CosineAnnealingLR"
+  eta_min: 0.000001
+  mixed_precision: true
+  canonical_size: [64, 64]
+  preprocessing: "method_c"  # Aspect-ratio preserving letterbox
+  representation: "single_channel" # Numerical [B, 1, 64, 64]
+
+experiments:
+  # ----------------------------------------------------------------------------
+  # Experiment 1: Standard Unweighted Cross-Entropy (Baseline)
+  # Standard shuffle sampler, unweighted CE loss.
+  # Hypothesis: High global accuracy (>90%) but severe recall collapse on minority
+  # defect classes (Near-full with 149 samples, Donut with 555 samples).
+  # ----------------------------------------------------------------------------
+  exp1_standard_ce:
+    name: "exp1_standard_ce"
+    description: "Standard unweighted Cross-Entropy loss with uniform random shuffling"
+    loss:
+      name: "cross_entropy"
+      use_class_weights: false
+      gamma: null
+    sampler:
+      name: "uniform_shuffle"
+      use_weighted_random_sampler: false
+
+  # ----------------------------------------------------------------------------
+  # Experiment 2: Class-Weighted Cross-Entropy
+  # Standard shuffle sampler, inverse-frequency weighted CE loss.
+  # Hypothesis: Gradient updates are scaled inversely proportional to class size,
+  # forcing the network to penalize minority misclassifications heavily.
+  # ----------------------------------------------------------------------------
+  exp2_weighted_ce:
+    name: "exp2_weighted_ce"
+    description: "Inverse-frequency Class-Weighted Cross-Entropy loss with uniform shuffling"
+    loss:
+      name: "weighted_cross_entropy"
+      use_class_weights: true
+      weight_mode: "balanced"
+      gamma: null
+    sampler:
+      name: "uniform_shuffle"
+      use_weighted_random_sampler: false
+
+  # ----------------------------------------------------------------------------
+  # Experiment 3: Multi-Class Focal Loss (gamma = 2.0)
+  # Standard shuffle sampler, unweighted Focal Loss.
+  # Hypothesis: Down-weights easy majority examples (well-classified 'none' wafers),
+  # preventing them from dominating the total gradient norm.
+  # ----------------------------------------------------------------------------
+  exp3_focal_loss:
+    name: "exp3_focal_loss"
+    description: "Multi-Class Focal Loss (gamma=2.0) without class weights or sampling"
+    loss:
+      name: "focal_loss"
+      use_class_weights: false
+      gamma: 2.0
+    sampler:
+      name: "uniform_shuffle"
+      use_weighted_random_sampler: false
+
+  # ----------------------------------------------------------------------------
+  # Experiment 4: Weighted Random Sampling
+  # Weighted random sampler, standard unweighted CE loss.
+  # Hypothesis: Directly balances mini-batch distributions at the data loader level
+  # so each gradient step sees approximately equal defect representation.
+  # ----------------------------------------------------------------------------
+  exp4_weighted_sampling:
+    name: "exp4_weighted_sampling"
+    description: "Weighted Random Sampler with standard unweighted Cross-Entropy loss"
+    loss:
+      name: "cross_entropy"
+      use_class_weights: false
+      gamma: null
+    sampler:
+      name: "weighted_random_sampler"
+      use_weighted_random_sampler: true
+      replacement: true

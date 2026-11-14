@@ -1,0 +1,50 @@
+# ==============================================================================
+# Semiconductor Wafer Defect Detection - Streamlit Web Dashboard Configuration
+# ==============================================================================
+
+app:
+  title: "WaferVision AI"
+  subtitle: "Semiconductor Wafer Defect Detection & Explainable AI Dashboard"
+  page_icon: "🔬"
+  layout: "wide"
+  initial_sidebar_state: "expanded"
+
+server:
+  port: 8501
+  max_upload_size_mb: 200
+
+inference:
+  default_model_path: "models/production/best_model.pt"
+  default_model_type: "cnn_baseline"
+  confidence_threshold: 0.50
+  device: "cuda"
+
+visualization:
+  die_colors:
+    0: "#1E1E24"    # Exterior / Background
+    1: "#2CA02C"    # Normal / Passing Die (Green)
+    2: "#D62728"    # Defective Die (Red)
+  die_legend:
+    0: "Exterior"
+    1: "Normal Die (Pass)"
+    2: "Defect Die (Fail)"
+  gradcam:
+    colormap: "inferno"
+    alpha: 0.55
+    target_layers:
+      cnn_baseline: "conv_block4"
+      resnet18: "layer4"
+
+pages:
+  single_wafer:
+    title: "Single Wafer Diagnosis"
+    description: "Upload or select wafer map for defect classification and Grad-CAM explainability."
+  lot_inspection:
+    title: "Lot-Level Inspection"
+    description: "Inspect 25-wafer manufacturing cassettes and aggregate lot yield statistics."
+  model_evaluation:
+    title: "Model Performance & Metrics"
+    description: "Review test set confusion matrix, per-class F1, and loss comparisons."
+  dataset_browser:
+    title: "WM-811K Dataset Explorer"
+    description: "Interactive visual catalog of defect morphology classes."

@@ -1,0 +1,39 @@
+# ==============================================================================
+# Semiconductor Wafer Defect Detection - Production / Runtime Dependencies
+# Python Target: 3.12
+# Platform: Windows 11 / Linux (CUDA 12.4+ supported)
+# ==============================================================================
+
+# Deep Learning Framework
+# Note for GPU acceleration with CUDA 12.4:
+# Run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+torch>=2.4.0
+torchvision>=0.19.0
+torchinfo>=1.8.0
+
+# Numerical Computing & Data Processing
+# NumPy is pinned <2.0.0 to prevent C-API/ABI breaking changes with compiled wheels
+numpy>=1.26.4,<2.0.0
+pandas>=2.2.2
+scipy>=1.13.1
+scikit-learn>=1.5.1
+
+# Computer Vision (Headless prevents Windows Qt / display conflicts)
+opencv-python-headless>=4.10.0.84
+
+# Explainable AI (XAI)
+# Note: PyPI package name is 'grad-cam' (imported as: from pytorch_grad_cam import GradCAM)
+grad-cam>=1.5.4
+
+# Interactive Web Application & Visualization
+streamlit>=1.39.0
+plotly>=5.24.1
+matplotlib>=3.9.2
+seaborn>=0.13.2
+
+# Configuration, Validation, Logging & Utilities
+pyyaml>=6.0.2
+pydantic>=2.8.2
+loguru>=0.7.2
+python-dotenv>=1.0.1
+tqdm>=4.66.5
