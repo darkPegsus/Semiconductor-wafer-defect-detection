@@ -30,6 +30,7 @@ class EarlyStopping:
 
         self.best_score: float | None = None
         self.best_epoch: int = 0
+        self.best_metadata: dict[str, Any] | None = None
         self.counter: int = 0
         self.should_stop: bool = False
 
@@ -67,6 +68,7 @@ class EarlyStopping:
         if self.is_improvement(score):
             self.best_score = score
             self.best_epoch = epoch
+            self.best_metadata = metadata
             self.counter = 0
             self.save_checkpoint(
                 model=model,

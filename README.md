@@ -280,15 +280,19 @@ python scripts/audit_pipeline.py
   - Training engine with mixed precision (`torch.amp`), `GradScaler`, and early stopping on Macro F1
   - 4 isolated experiment configurations in `configs/experiments.yaml`
   - 35 automated unit tests passing across all components
-- [ ] **Phase 4: Explainable AI (XAI) Integration**
+- [x] **Phase 4: Model Training & Controlled Experiments**
+  - **Experiment 1 (Custom CNN Baseline, Standard CE):** Best Epoch 24, Val Accuracy 97.65%, Macro F1 0.8861, Macro Recall 88.13%, Scratch Recall 69.41%.
+  - **Experiment 2 (Custom CNN + Effective-Number Weighted CE, $\beta=0.9999$):** Best Epoch 16, Early Stopped at Epoch 23, Val Accuracy 97.59%, Macro F1 0.8831, Macro Recall surged to **89.01% (+0.88%)**, Scratch Recall surged to **73.53% (+4.12%)**, Donut Recall surged to **96.20% (+8.86%)**.
+  - Programmatic GPU VRAM profiling and memory breakdown: Active live tensors (125.2 MB) vs. PyTorch caching allocator pool (260.0 MB) vs. total process memory (375.0 MB).
+- [ ] **Phase 5: Explainable AI (XAI) Integration**
   - Layer-targeted Grad-CAM hook integration (`conv_block4` and `layer4`)
   - Discrete die activation heatmap generator and overlay visualizer
-- [ ] **Phase 5: Production Streamlit Dashboard (WaferVision AI)**
+- [ ] **Phase 6: Production Streamlit Dashboard (WaferVision AI)**
   - Single wafer upload and live diagnosis interface
   - 25-wafer lot cassette inspection and yield tracking
   - Live model performance metrics and interactive confusion matrix
   - WM-811K visual dataset explorer
-- [ ] **Phase 6: Quality Assurance, Model Export & Final Documentation**
+- [ ] **Phase 7: Quality Assurance, Model Export & Final Documentation**
   - Production model export (`.pt`) and inference benchmark
   - Final documentation and deployment sign-off
 
