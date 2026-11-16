@@ -46,11 +46,12 @@ experiments:
   # ----------------------------------------------------------------------------
   exp2_weighted_ce:
     name: "exp2_weighted_ce"
-    description: "Inverse-frequency Class-Weighted Cross-Entropy loss with uniform shuffling"
+    description: "Effective-Number Class-Weighted Cross-Entropy loss (Cui et al. 2019, beta=0.9999) with uniform shuffling"
     loss:
       name: "weighted_cross_entropy"
       use_class_weights: true
-      weight_mode: "balanced"
+      weight_mode: "effective_num"
+      beta: 0.9999
       gamma: null
     sampler:
       name: "uniform_shuffle"

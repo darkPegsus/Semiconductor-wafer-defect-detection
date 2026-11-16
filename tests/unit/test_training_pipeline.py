@@ -52,6 +52,32 @@ def test_loss_functions():
     assert focal_loss.item() < ce_loss.item()
 
 
+def test_focal_loss_numerical_stability():
+    """Verify MultiClassFocalLoss maintains numerical stability and finite gradients."""
+    focal_fn = get_loss_function("focal_loss", gamma=2.0)
+
+    # Extreme logits: high-confidence correct, high-confidence incorrect, and near-zero
+    logits = torch.tensor(
+        [
+            [100.0, -100.0, -100.0],  # p_t ~ 1.0, test clamp against negative (1 - p_t)
+            [-100.0, 100.0, -100.0],  # p_t ~ 0.0 for target 0
+            [0.0, 0.0, 0.0],  # uniform probabilities
+        ],
+        dtype=torch.float32,
+        requires_grad=True,
+    )
+    targets = torch.tensor([0, 0, 1], dtype=torch.long)
+
+    loss = focal_fn(logits, targets)
+    assert torch.isfinite(loss), "Focal loss produced non-finite value!"
+
+    loss.backward()
+    assert logits.grad is not None
+    assert torch.all(torch.isfinite(logits.grad)), (
+        "Focal loss backward produced non-finite gradients!"
+    )
+
+
 def test_weighted_random_sampler():
     """Verify weighted random sampler creates appropriate sample weights."""
     labels = np.array([0, 0, 0, 0, 1])  # Class 0 has 4, Class 1 has 1

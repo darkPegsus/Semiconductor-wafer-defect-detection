@@ -105,8 +105,8 @@ class MultiClassFocalLoss(nn.Module):
         log_p_t = log_probs.gather(dim=1, index=targets_expanded).squeeze(-1)  # [B]
         p_t = probs.gather(dim=1, index=targets_expanded).squeeze(-1)  # [B]
 
-        # Focal modulating factor: (1 - p_t)^gamma
-        modulating_factor = torch.pow(1.0 - p_t, self.gamma)  # [B]
+        # Focal modulating factor: (1 - p_t)^gamma with clamp for AMP numerical stability
+        modulating_factor = torch.pow(torch.clamp(1.0 - p_t, min=0.0, max=1.0), self.gamma)  # [B]
         focal_loss = -modulating_factor * log_p_t  # [B]
 
         # Apply class weights alpha if configured

@@ -1,6 +1,7 @@
 """Training and evaluation engine with mixed precision, gradient scaling, and memory monitoring."""
 
 import subprocess
+import time
 from pathlib import Path
 from typing import Any
 
@@ -68,6 +69,7 @@ def train_one_epoch(
     running_loss = 0.0
     total_samples = 0
     use_amp = scaler is not None and device.type == "cuda"
+    sampled_counts = torch.zeros(9, dtype=torch.long, device=device)
 
     iterator = tqdm(dataloader, desc="Training", leave=False) if show_progress else dataloader
 
@@ -75,6 +77,7 @@ def train_one_epoch(
         images = batch["image"].to(device, non_blocking=True)
         targets = batch["label"].to(device, non_blocking=True)
         batch_size = images.size(0)
+        sampled_counts += torch.bincount(targets, minlength=9)
 
         optimizer.zero_grad(set_to_none=True)
 
@@ -116,6 +119,7 @@ def train_one_epoch(
         "peak_reserved_mb": float(peak_reserved_mb),
         "smi_used_mb": float(smi_used_mb),
         "gpu_util_pct": float(gpu_util_pct),
+        "sampled_class_counts": sampled_counts.cpu().tolist(),
     }
 
 
@@ -219,6 +223,8 @@ class WaferTrainer:
             "peak_reserved_mb": [],
             "smi_used_mb": [],
             "gpu_util_pct": [],
+            "epoch_duration_seconds": [],
+            "sampled_class_counts": [],
         }
         self.best_val_metrics: dict[str, Any] | None = None
 
@@ -242,6 +248,7 @@ class WaferTrainer:
         )
 
         for epoch in range(1, epochs + 1):
+            epoch_start_time = time.time()
             if self.device.type == "cuda":
                 torch.cuda.reset_peak_memory_stats(self.device)
 
@@ -268,6 +275,8 @@ class WaferTrainer:
                 show_progress=show_progress,
             )
 
+            epoch_duration = round(time.time() - epoch_start_time, 2)
+
             # Step scheduler
             if self.scheduler is not None:
                 if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
@@ -289,6 +298,10 @@ class WaferTrainer:
             self.history["peak_reserved_mb"].append(train_results["peak_reserved_mb"])
             self.history["smi_used_mb"].append(train_results["smi_used_mb"])
             self.history["gpu_util_pct"].append(train_results["gpu_util_pct"])
+            self.history["epoch_duration_seconds"].append(epoch_duration)
+            self.history["sampled_class_counts"].append(
+                train_results.get("sampled_class_counts", [])
+            )
 
             logger.info(
                 f"Epoch {epoch:02d}/{epochs:02d} | "
@@ -299,7 +312,8 @@ class WaferTrainer:
                 f"LR: {current_lr:.6f} | "
                 f"VRAM (Alloc/Res/SMI): {train_results['peak_allocated_mb']:.1f}/"
                 f"{train_results['peak_reserved_mb']:.1f}/{train_results['smi_used_mb']:.1f} MB | "
-                f"GPU Util: {train_results['gpu_util_pct']:.0f}%"
+                f"GPU Util: {train_results['gpu_util_pct']:.0f}% | "
+                f"Time: {epoch_duration:.1f}s"
             )
 
             # Early stopping check

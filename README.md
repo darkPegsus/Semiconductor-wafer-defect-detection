@@ -53,7 +53,7 @@ flowchart TD
     subgraph Modeling ["Deep Learning Model Suite"]
         ENC_1CH --> MODELS{"Model Architecture"}
         ENC_3CH --> MODELS
-        MODELS --> CNN["Custom 4-Block CNN<br/>(~450k Params, <350MB VRAM)"]
+        MODELS --> CNN["Custom 4-Block CNN<br/>(520,681 Params, <400MB VRAM)"]
         MODELS --> RES["Adapted ResNet-18<br/>(~11.2M Params, Weight Migration)"]
     end
 
@@ -113,7 +113,7 @@ Implemented in [`src/models/`](file:///src/models/):
   * **Adaptive Pooling:** `AdaptiveAvgPool2d((2, 2))` $\implies 1,024$ flattened features.
   * **Classifier Head:** `Dropout(0.30)` $\to$ `Linear(1024, 128)` $\to$ `ReLU()` $\to$ `Dropout(0.20)` $\to$ `Linear(128, 9)`.
 * **Weights:** Kaiming normal initialization on all convolutions and linear layers.
-* **Complexity:** ~450,000 parameters; $< 350\text{ MB}$ VRAM at batch size 64 with mixed precision.
+* **Complexity:** 520,681 parameters (100% trainable); $< 400\text{ MB}$ VRAM at batch size 64 with mixed precision.
 
 #### Model B: Adapted ResNet-18 (`AdaptedResNet18`)
 * **Target:** Deep residual network leveraging pre-trained ImageNet spatial representations.
@@ -181,7 +181,7 @@ Semiconductor-wafer-defect-detection/
 │   │   └── validator.py                  # Dynamic dataset schema and empirical statistics validator
 │   ├── models/                           # Model architectures
 │   │   ├── __init__.py
-│   │   ├── custom_cnn.py                 # Custom 4-block CNN baseline (~450k params)
+│   │   ├── custom_cnn.py                 # Custom 4-block CNN baseline (520,681 params)
 │   │   └── resnet18.py                   # Adapted ResNet-18 with channel-mean weight migration (~11.2M params)
 │   ├── training/                         # Training & optimization engine
 │   │   ├── __init__.py
@@ -274,16 +274,22 @@ python scripts/audit_pipeline.py
   - Preprocessing ablation benchmark (Methods A, B, and C)
 - [x] **Phase 3: Deep Learning Modeling & Training Infrastructure**
   - Dual input representations: Single-channel numerical & 3-channel one-hot
-  - Implementation of Custom 4-Block CNN Baseline (~450k parameters)
+  - Implementation of Custom 4-Block CNN Baseline (520,681 parameters)
   - Implementation of Adapted ResNet-18 (~11.2M parameters) with channel-mean weight migration
   - Loss implementations: Standard Cross-Entropy, Class-Weighted Cross-Entropy, Multi-Class Focal Loss
   - Training engine with mixed precision (`torch.amp`), `GradScaler`, and early stopping on Macro F1
   - 4 isolated experiment configurations in `configs/experiments.yaml`
-  - 35 automated unit tests passing across all components
-- [x] **Phase 4: Model Training & Controlled Experiments**
-  - **Experiment 1 (Custom CNN Baseline, Standard CE):** Best Epoch 24, Val Accuracy 97.65%, Macro F1 0.8861, Macro Recall 88.13%, Scratch Recall 69.41%.
-  - **Experiment 2 (Custom CNN + Effective-Number Weighted CE, $\beta=0.9999$):** Best Epoch 16, Early Stopped at Epoch 23, Val Accuracy 97.59%, Macro F1 0.8831, Macro Recall surged to **89.01% (+0.88%)**, Scratch Recall surged to **73.53% (+4.12%)**, Donut Recall surged to **96.20% (+8.86%)**.
-  - Programmatic GPU VRAM profiling and memory breakdown: Active live tensors (125.2 MB) vs. PyTorch caching allocator pool (260.0 MB) vs. total process memory (375.0 MB).
+  - 36 automated unit tests passing across all components
+- [x] **Phase 4: Custom CNN Imbalance Mitigation Experiments (Phase 4A)**
+  - **Experiment 1 (Baseline Standard CE):** Best Epoch 24, Val Accuracy **97.65%**, Macro F1 **0.8861** (**🏆 Overall Benchmark Winner**), Macro Recall 88.13%, Loc Recall 79.14%.
+  - **Experiment 2 (Cui et al. Effective-Number Weighted CE, $\beta=0.9999$):** Best Epoch 16, Early Stopped at Epoch 23, Val Accuracy 97.59%, Macro F1 0.8831, Macro Recall surged to **89.01% (+0.88%)**, Scratch Recall surged to **73.53% (+4.12%)**, Donut Recall surged to **96.20% (+8.86%)**.
+  - **Experiment 3 (Multi-Class Focal Loss, $\gamma=2.0$):** Best Epoch 24, Val Accuracy **97.66%**, Macro Precision reached **90.98% (+1.55%)**, Normal Wafer False Alarms reduced to **119 / 0.57%** (~43% reduction in false alarms).
+  - **Experiment 4 (Inverse-Frequency WeightedRandomSampler):** Best Epoch 25, Val Accuracy 97.54%, Macro F1 0.8828, Random F1 reached **0.9084**, Near-full reached **100.0% precision / 0.9756 F1**; verified empirical mini-batch draws at $11.11\% \pm 0.02\%$ across all 9 classes.
+  - Comprehensive comparison report archived in [`docs/experiments/custom_cnn_comparison.md`](docs/experiments/custom_cnn_comparison.md).
+- [ ] **Phase 4B: ResNet-18 Transfer Learning Experiments**
+  - Transfer learning training with ImageNet pretrained feature extraction
+  - Channel-mean adapted input layer evaluation
+  - Comparative benchmarking against Custom CNN winner (Exp 1)
 - [ ] **Phase 5: Explainable AI (XAI) Integration**
   - Layer-targeted Grad-CAM hook integration (`conv_block4` and `layer4`)
   - Discrete die activation heatmap generator and overlay visualizer
