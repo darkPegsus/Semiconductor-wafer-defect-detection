@@ -286,10 +286,16 @@ python scripts/audit_pipeline.py
   - **Experiment 3 (Multi-Class Focal Loss, $\gamma=2.0$):** Best Epoch 24, Val Accuracy **97.66%**, Macro Precision reached **90.98% (+1.55%)**, Normal Wafer False Alarms reduced to **119 / 0.57%** (~43% reduction in false alarms).
   - **Experiment 4 (Inverse-Frequency WeightedRandomSampler):** Best Epoch 25, Val Accuracy 97.54%, Macro F1 0.8828, Random F1 reached **0.9084**, Near-full reached **100.0% precision / 0.9756 F1**; verified empirical mini-batch draws at $11.11\% \pm 0.02\%$ across all 9 classes.
   - Comprehensive comparison report archived in [`docs/experiments/custom_cnn_comparison.md`](docs/experiments/custom_cnn_comparison.md).
-- [ ] **Phase 4B: ResNet-18 Transfer Learning Experiments**
-  - Transfer learning training with ImageNet pretrained feature extraction
-  - Channel-mean adapted input layer evaluation
-  - Comparative benchmarking against Custom CNN winner (Exp 1)
+- [x] **Phase 5A: ResNet-18 ImageNet Transfer Learning (ResNet18-A)**
+  - Transfer learning with ImageNet pretrained feature extraction (`ResNet18_Weights.DEFAULT`, 11,174,857 parameters)
+  - Channel-mean adapted single-channel `conv1` input layer ($W_{\text{new}} = \frac{1}{3}\sum W$)
+  - Two-stage schedule: Warmup (Epochs 1–3, 7,753 trainable parameters) $\to$ Full fine-tuning (Epochs 4–30, differential LR: backbone $10^{-5}$, head $10^{-4}$)
+  - Validation Macro F1 = **0.8611** (Best Epoch 23, Val Accuracy **97.32%**, Clean Wafer False Alarm Rate **0.60%** / 126 wafers)
+  - Empirical finding: Pretrained ResNet-18 underperformed Custom CNN Baseline (Exp 1: 0.8861) by $-0.0250$ F1 due to early aggressive spatial downsampling ($64 \times 64 \to 16 \times 16$ before layer 1) and continuous natural-scene domain gap
+  - Full documentation archived in [`docs/experiments/resnet18_pretrained.md`](docs/experiments/resnet18_pretrained.md)
+- [ ] **Phase 5B: ResNet-18 Random Initialization (From Scratch)**
+  - Train identical ResNet-18 architecture with random weight initialization (Kaiming normal)
+  - Isolate the contribution of ImageNet pretraining vs. residual architecture topology
 - [ ] **Phase 5: Explainable AI (XAI) Integration**
   - Layer-targeted Grad-CAM hook integration (`conv_block4` and `layer4`)
   - Discrete die activation heatmap generator and overlay visualizer

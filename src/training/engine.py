@@ -232,12 +232,16 @@ class WaferTrainer:
         self,
         epochs: int = 30,
         show_progress: bool = True,
+        unfreeze_at_epoch: int | None = None,
+        on_unfreeze: Any = None,
     ) -> dict[str, Any]:
         """Execute full training loop with validation and early stopping.
 
         Args:
             epochs: Maximum epochs to train.
             show_progress: Display progress bars.
+            unfreeze_at_epoch: Optional epoch number at which to trigger on_unfreeze callback.
+            on_unfreeze: Optional callback receiving (trainer) to reconfigure model/optimizer.
 
         Returns:
             Dictionary containing complete training history.
@@ -248,11 +252,21 @@ class WaferTrainer:
         )
 
         for epoch in range(1, epochs + 1):
+            if unfreeze_at_epoch is not None and epoch == unfreeze_at_epoch:
+                if on_unfreeze is not None:
+                    logger.info(f"Triggering unfreeze callback at epoch {epoch:02d}...")
+                    on_unfreeze(self)
+
             epoch_start_time = time.time()
             if self.device.type == "cuda":
                 torch.cuda.reset_peak_memory_stats(self.device)
 
-            current_lr = self.optimizer.param_groups[0]["lr"]
+            if len(self.optimizer.param_groups) > 1:
+                lr_str = "/".join(f"{pg['lr']:.1e}" for pg in self.optimizer.param_groups)
+                current_lr = self.optimizer.param_groups[-1]["lr"]
+            else:
+                lr_str = f"{self.optimizer.param_groups[0]['lr']:.6f}"
+                current_lr = self.optimizer.param_groups[0]["lr"]
 
             # Train phase
             train_results = train_one_epoch(
@@ -309,7 +323,7 @@ class WaferTrainer:
                 f"Val Loss: {val_results['loss']:.4f} | "
                 f"Val Acc: {val_results['accuracy']:.4f} | "
                 f"Val Macro F1: {val_results['macro_f1']:.4f} | "
-                f"LR: {current_lr:.6f} | "
+                f"LR: {lr_str} | "
                 f"VRAM (Alloc/Res/SMI): {train_results['peak_allocated_mb']:.1f}/"
                 f"{train_results['peak_reserved_mb']:.1f}/{train_results['smi_used_mb']:.1f} MB | "
                 f"GPU Util: {train_results['gpu_util_pct']:.0f}% | "
