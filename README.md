@@ -299,9 +299,15 @@ python scripts/audit_pipeline.py
   - Validation Macro F1 = **0.8544** (Best Epoch 10, Val Accuracy **97.05%**, Early Stopped at Epoch 17)
   - Empirical finding: Random init underperformed Pretrained ResNet18-A (0.8611) by $-0.0067$ F1 and Custom CNN Baseline (0.8861) by $-0.0317$ F1; ImageNet pretraining provided critical precision stabilization (Macro Precision 0.8846 vs. 0.8507; clean false alarms 126 vs. 282), while Random Init gained recall on `Scratch` (72.35% vs. 61.76%) and `Center` (94.94% vs. 88.91%)
   - Full documentation archived in [`docs/experiments/resnet18_random_init.md`](docs/experiments/resnet18_random_init.md)
-- [ ] **Phase 6: Explainable AI (XAI) Integration**
-  - Layer-targeted Grad-CAM hook integration (`conv_block4` and `layer4`)
-  - Discrete die activation heatmap generator and overlay visualizer
+- [x] **Phase 6A: Grad-CAM Explainability for CustomWaferCNN Baseline**
+  - Implemented Grad-CAM engine in [`src/explainability/grad_cam.py`](src/explainability/grad_cam.py) with forward and backward hooks targeting `features.conv_block4`
+  - High-contrast die-preserving overlay algorithm keeping microscopic defect dies (value=2) distinctly visible without heatmap occlusion
+  - Systematic validation across all 9 canonical defect classes, missed defect escapes (`Scratch`, `Loc`, `Edge-Loc` predicted as `none`), clean wafer false alarms, and confidence extremes
+  - Validated model prediction invariance, class specificity, safe normalization on zero-gradient inputs, and automatic hook cleanup
+  - Comprehensive report and 24 visual artifacts documented in [`docs/experiments/gradcam_custom_cnn.md`](docs/experiments/gradcam_custom_cnn.md)
+- [ ] **Phase 6B: Grad-CAM Explainability for AdaptedResNet18**
+  - Layer-targeted Grad-CAM hook integration on ResNet-18 `layer4`
+  - Comparative spatial attribution analysis: Custom CNN vs. ResNet-18 receptive field dynamics
 - [ ] **Phase 7: Production Streamlit Dashboard (WaferVision AI)**
   - Single wafer upload and live diagnosis interface
   - 25-wafer lot cassette inspection and yield tracking
