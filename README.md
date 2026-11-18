@@ -293,18 +293,21 @@ python scripts/audit_pipeline.py
   - Validation Macro F1 = **0.8611** (Best Epoch 23, Val Accuracy **97.32%**, Clean Wafer False Alarm Rate **0.60%** / 126 wafers)
   - Empirical finding: Pretrained ResNet-18 underperformed Custom CNN Baseline (Exp 1: 0.8861) by $-0.0250$ F1 due to early aggressive spatial downsampling ($64 \times 64 \to 16 \times 16$ before layer 1) and continuous natural-scene domain gap
   - Full documentation archived in [`docs/experiments/resnet18_pretrained.md`](docs/experiments/resnet18_pretrained.md)
-- [ ] **Phase 5B: ResNet-18 Random Initialization (From Scratch)**
-  - Train identical ResNet-18 architecture with random weight initialization (Kaiming normal)
-  - Isolate the contribution of ImageNet pretraining vs. residual architecture topology
-- [ ] **Phase 5: Explainable AI (XAI) Integration**
+- [x] **Phase 5B: ResNet-18 Random Initialization (From Scratch - ResNet18-B)**
+  - Trained identical ResNet-18 architecture (11,174,857 parameters, 100% trainable from Epoch 1) from random Kaiming Normal initialization
+  - Standard Cross-Entropy with AdamW (`lr=1e-3`, `weight_decay=1e-2`) and CosineAnnealingLR
+  - Validation Macro F1 = **0.8544** (Best Epoch 10, Val Accuracy **97.05%**, Early Stopped at Epoch 17)
+  - Empirical finding: Random init underperformed Pretrained ResNet18-A (0.8611) by $-0.0067$ F1 and Custom CNN Baseline (0.8861) by $-0.0317$ F1; ImageNet pretraining provided critical precision stabilization (Macro Precision 0.8846 vs. 0.8507; clean false alarms 126 vs. 282), while Random Init gained recall on `Scratch` (72.35% vs. 61.76%) and `Center` (94.94% vs. 88.91%)
+  - Full documentation archived in [`docs/experiments/resnet18_random_init.md`](docs/experiments/resnet18_random_init.md)
+- [ ] **Phase 6: Explainable AI (XAI) Integration**
   - Layer-targeted Grad-CAM hook integration (`conv_block4` and `layer4`)
   - Discrete die activation heatmap generator and overlay visualizer
-- [ ] **Phase 6: Production Streamlit Dashboard (WaferVision AI)**
+- [ ] **Phase 7: Production Streamlit Dashboard (WaferVision AI)**
   - Single wafer upload and live diagnosis interface
   - 25-wafer lot cassette inspection and yield tracking
   - Live model performance metrics and interactive confusion matrix
   - WM-811K visual dataset explorer
-- [ ] **Phase 7: Quality Assurance, Model Export & Final Documentation**
+- [ ] **Phase 8: Quality Assurance, Model Export & Final Documentation**
   - Production model export (`.pt`) and inference benchmark
   - Final documentation and deployment sign-off
 
