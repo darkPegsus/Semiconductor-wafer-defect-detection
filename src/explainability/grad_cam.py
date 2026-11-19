@@ -48,7 +48,7 @@ def resolve_target_layer(model: nn.Module, target_layer: nn.Module | str) -> nn.
     if target_layer in named_modules:
         return named_modules[target_layer]
 
-    # Handle standard configuration alias for CustomWaferCNN
+    # Handle standard configuration aliases for CustomWaferCNN and AdaptedResNet18
     alias_map = {
         "features.conv_block4": "block4",
         "conv_block4": "block4",
@@ -58,11 +58,21 @@ def resolve_target_layer(model: nn.Module, target_layer: nn.Module | str) -> nn.
         "conv_block2": "block2",
         "features.conv_block1": "block1",
         "conv_block1": "block1",
+        "layer4": "backbone.layer4",
+        "layer3": "backbone.layer3",
+        "layer2": "backbone.layer2",
+        "layer1": "backbone.layer1",
     }
     if target_layer in alias_map:
         resolved_name = alias_map[target_layer]
         if resolved_name in named_modules:
             return named_modules[resolved_name]
+
+    # Check inside nested backbone (e.g. AdaptedResNet18)
+    if hasattr(model, "backbone") and isinstance(model.backbone, nn.Module):
+        backbone_named = dict(model.backbone.named_modules())
+        if target_layer in backbone_named:
+            return backbone_named[target_layer]
 
     # Dotted path traversal
     parts = target_layer.split(".")

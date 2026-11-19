@@ -10,12 +10,21 @@ from src.explainability.grad_cam import (
     resolve_target_layer,
 )
 from src.models.custom_cnn import CustomWaferCNN
+from src.models.resnet18 import AdaptedResNet18
 
 
 @pytest.fixture
 def custom_cnn_model():
     """Create and return a CustomWaferCNN in eval mode."""
     model = CustomWaferCNN(in_channels=1, num_classes=9)
+    model.eval()
+    return model
+
+
+@pytest.fixture
+def resnet18_model():
+    """Create and return an AdaptedResNet18 in eval mode without loading remote weights."""
+    model = AdaptedResNet18(in_channels=1, num_classes=9, pretrained=False)
     model.eval()
     return model
 
@@ -159,3 +168,53 @@ def test_overlay_heatmap_on_wafer():
 
     with pytest.raises(ValueError, match="Expected 2D heatmap"):
         overlay_heatmap_on_wafer(wafer, np.zeros((64, 64, 1)))
+
+
+def test_resolve_target_layer_resnet18(resnet18_model):
+    """Test target layer resolution for AdaptedResNet18 using alias and dotted paths."""
+    resolved_alias = resolve_target_layer(resnet18_model, "layer4")
+    assert resolved_alias is resnet18_model.backbone.layer4
+
+    resolved_dotted = resolve_target_layer(resnet18_model, "backbone.layer4")
+    assert resolved_dotted is resnet18_model.backbone.layer4
+
+    resolved_sub = resolve_target_layer(resnet18_model, "backbone.layer4.1")
+    assert resolved_sub is resnet18_model.backbone.layer4[1]
+
+
+def test_grad_cam_resnet18_output_shape(resnet18_model, dummy_wafer_batch):
+    """Verify Grad-CAM on AdaptedResNet18 returns [B, 64, 64] heatmaps."""
+    with GradCAM(resnet18_model, target_layer="layer4") as cam:
+        heatmaps, preds, probs = cam.generate_cam(dummy_wafer_batch)
+
+        assert heatmaps.shape == (2, 64, 64)
+        assert preds.shape == (2,)
+        assert probs.shape == (2, 9)
+        assert torch.all(torch.isfinite(heatmaps))
+        assert heatmaps.min() >= 0.0
+        assert heatmaps.max() <= 1.0
+
+
+def test_grad_cam_resnet18_prediction_consistency(resnet18_model, dummy_wafer_batch):
+    """Verify Grad-CAM on AdaptedResNet18 does not alter predictions."""
+    with torch.no_grad():
+        orig_logits = resnet18_model(dummy_wafer_batch)
+        orig_probs = torch.softmax(orig_logits, dim=1)
+        orig_preds = torch.argmax(orig_logits, dim=1)
+
+    with GradCAM(resnet18_model, target_layer="layer4") as cam:
+        _, cam_preds, cam_probs = cam.generate_cam(dummy_wafer_batch)
+
+    assert torch.equal(orig_preds, cam_preds)
+    assert torch.allclose(orig_probs, cam_probs, atol=1e-5)
+
+
+def test_grad_cam_resnet18_hook_cleanup(resnet18_model):
+    """Verify hooks are cleanly detached on AdaptedResNet18."""
+    cam = GradCAM(resnet18_model, target_layer="layer4")
+    assert cam.forward_hook_handle is not None
+    assert cam.backward_hook_handle is not None
+
+    cam.remove_hooks()
+    assert cam.forward_hook_handle is None
+    assert cam.backward_hook_handle is None

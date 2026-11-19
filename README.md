@@ -4,7 +4,7 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.6.0%2Bcu124-EE4C2C.svg)](https://pytorch.org/)
 [![CUDA](https://img.shields.io/badge/CUDA-12.4-76B900.svg)](https://developer.nvidia.com/cuda-toolkit)
 [![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-35%20Passed-0A9EDC.svg)](https://docs.pytest.org/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-47%20Passed-0A9EDC.svg)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 An end-to-end, production-grade deep learning system for automated spatial defect pattern classification on semiconductor wafer maps from the benchmark **WM-811K (LSWMD)** dataset. Designed with rigorous data hygiene to eliminate lot-level data leakage, domain-specific preprocessing, multi-class Focal Loss for severe class imbalance, Explainable AI (Grad-CAM), and an interactive Streamlit engineering dashboard.
@@ -305,9 +305,12 @@ python scripts/audit_pipeline.py
   - Systematic validation across all 9 canonical defect classes, missed defect escapes (`Scratch`, `Loc`, `Edge-Loc` predicted as `none`), clean wafer false alarms, and confidence extremes
   - Validated model prediction invariance, class specificity, safe normalization on zero-gradient inputs, and automatic hook cleanup
   - Comprehensive report and 24 visual artifacts documented in [`docs/experiments/gradcam_custom_cnn.md`](docs/experiments/gradcam_custom_cnn.md)
-- [ ] **Phase 6B: Grad-CAM Explainability for AdaptedResNet18**
-  - Layer-targeted Grad-CAM hook integration on ResNet-18 `layer4`
-  - Comparative spatial attribution analysis: Custom CNN vs. ResNet-18 receptive field dynamics
+- [x] **Phase 6B: Grad-CAM Explainability for AdaptedResNet18 & Controlled Comparative Analysis**
+  - Integrated Grad-CAM hooks targeting `backbone.layer4` in `AdaptedResNet18` (11,174,857 parameters, ImageNet pretrained)
+  - Generated 18 ResNet-18 specific figures and 10 controlled 5-panel side-by-side comparative visualizations against `CustomWaferCNN` across all 9 classes
+  - Discovered and visualized 324 discrepancy cases where `CustomWaferCNN` correctly detected defects that `ResNet-18` missed
+  - Empirically validated the **Early Downsampling Hypothesis**: ResNet-18 downsamples $64 \times 64$ inputs by $32\times$ into a $2 \times 2$ grid cell, diluting sparse 1-die wide scratches and small clusters into normal background dies ($30.6\%$ escape rate on Scratch vs. $15.9\%$ for Custom CNN)
+  - Complete documentation archived in [`docs/experiments/gradcam_resnet18.md`](docs/experiments/gradcam_resnet18.md) and [`docs/experiments/gradcam_architecture_comparison.md`](docs/experiments/gradcam_architecture_comparison.md)
 - [ ] **Phase 7: Production Streamlit Dashboard (WaferVision AI)**
   - Single wafer upload and live diagnosis interface
   - 25-wafer lot cassette inspection and yield tracking
