@@ -309,7 +309,7 @@ python scripts/audit_pipeline.py
   - Integrated Grad-CAM hooks targeting `backbone.layer4` in `AdaptedResNet18` (11,174,857 parameters, ImageNet pretrained)
   - Generated 18 ResNet-18 specific figures and 10 controlled 5-panel side-by-side comparative visualizations against `CustomWaferCNN` across all 9 classes
   - Discovered and visualized 324 discrepancy cases where `CustomWaferCNN` correctly detected defects that `ResNet-18` missed
-  - Empirically validated the **Early Downsampling Hypothesis**: ResNet-18 downsamples $64 \times 64$ inputs by $32\times$ into a $2 \times 2$ grid cell, diluting sparse 1-die wide scratches and small clusters into normal background dies ($30.6\%$ escape rate on Scratch vs. $15.9\%$ for Custom CNN)
+  - Empirically validated the **Early Downsampling Hypothesis**: ResNet-18 downsamples $64 \times 64$ inputs by $32\times$ into a $2 \times 2$ grid cell, diluting sparse 1-die wide scratches and small clusters into normal background dies ($30.6\%$ clean escape rate on Scratch vs. $21.8\%$ for Custom CNN; Scratch recall $61.8\%$ vs. $69.4\%$)
   - Complete documentation archived in [`docs/experiments/gradcam_resnet18.md`](docs/experiments/gradcam_resnet18.md) and [`docs/experiments/gradcam_architecture_comparison.md`](docs/experiments/gradcam_architecture_comparison.md)
 - [ ] **Phase 7: Production Streamlit Dashboard (WaferVision AI)**
   - Single wafer upload and live diagnosis interface

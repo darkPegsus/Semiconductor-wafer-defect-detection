@@ -37,8 +37,8 @@ This comparative investigation reveals:
 | **Downsampling Factor** | **$16\times$** ($64 \to 32 \to 16 \to 8 \to 4$) | **$32\times$** ($64 \to 16 \to 8 \to 4 \to 2$) | ResNet downsamples twice as aggressively |
 | **Bilinear Upsampling Ratio**| **$16\times$ enlargement** | **$32\times$ enlargement** | Custom CNN exhibits significantly less blur |
 | **Validation Macro F1** | **0.8861** | **0.8611** | **Custom CNN leads by +0.0250 F1** |
-| **Validation Scratch Recall** | **84.12%** (Escape: 15.9%) | **69.41%** (Escape: 30.6%) | **Custom CNN catches $2\times$ more scratches** |
-| **Validation Loc Recall** | **81.13%** (Escape: 18.9%) | **81.09%** (Escape: 18.9%) | Custom CNN produces sharper localization |
+| **Validation Scratch Recall** | **69.41%** (Clean Escape: 21.8%) | **61.76%** (Clean Escape: 30.6%) | **Custom CNN leads by +7.65% (+40.5% fewer escapes)** |
+| **Validation Loc Recall** | **79.14%** (Clean Escape: 13.7%) | **70.18%** (Clean Escape: 18.9%) | **Custom CNN leads by +8.96% (+38.6% fewer escapes)** |
 | **Validation Memory (VRAM)** | **$\sim 180$ MB** | **$\sim 650$ MB** | Custom CNN is $3.6\times$ lighter in memory |
 
 ---
