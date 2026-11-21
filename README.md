@@ -311,12 +311,21 @@ python scripts/audit_pipeline.py
   - Discovered and visualized 324 discrepancy cases where `CustomWaferCNN` correctly detected defects that `ResNet-18` missed
   - Empirically validated the **Early Downsampling Hypothesis**: ResNet-18 downsamples $64 \times 64$ inputs by $32\times$ into a $2 \times 2$ grid cell, diluting sparse 1-die wide scratches and small clusters into normal background dies ($30.6\%$ clean escape rate on Scratch vs. $21.8\%$ for Custom CNN; Scratch recall $61.8\%$ vs. $69.4\%$)
   - Complete documentation archived in [`docs/experiments/gradcam_resnet18.md`](docs/experiments/gradcam_resnet18.md) and [`docs/experiments/gradcam_architecture_comparison.md`](docs/experiments/gradcam_architecture_comparison.md)
-- [ ] **Phase 7: Production Streamlit Dashboard (WaferVision AI)**
+- [x] **Phase 7: Final Held-Out Test Evaluation (Benchmark Winner: CustomWaferCNN)**
+  - Unbiased evaluation on 24,705 held-out test wafers across 1,537 lots with verified zero lot leakage
+  - Test Accuracy: **97.62%** (Validation: 97.65%, $\Delta = -0.03\%$)
+  - Test Macro F1: **0.8746** (Validation: 0.8861, $\Delta = -0.0115$ proving exceptional out-of-lot generalization)
+  - Test Weighted F1: **0.9761** | Test Macro Precision: **89.09%** | Test Macro Recall: **86.22%**
+  - Clean Wafer False Alarm Rate: **0.95%** (200 / 21,061 clean wafers falsely flagged)
+  - Operational Efficiency: GPU throughput **1,848.3 wafers/sec** (Average latency **0.1634 ms** / wafer, Peak VRAM **148.1 MB**); CPU throughput **274.5 wafers/sec**
+  - Model Calibration: Expected Calibration Error (ECE) = **1.64%** ($M=15$ bins)
+  - Full benchmark report archived in [`docs/experiments/final_test_evaluation.md`](docs/experiments/final_test_evaluation.md)
+- [ ] **Phase 8: Production Streamlit Dashboard (WaferVision AI)**
   - Single wafer upload and live diagnosis interface
   - 25-wafer lot cassette inspection and yield tracking
   - Live model performance metrics and interactive confusion matrix
   - WM-811K visual dataset explorer
-- [ ] **Phase 8: Quality Assurance, Model Export & Final Documentation**
+- [ ] **Phase 9: Quality Assurance, Model Export & Final Documentation**
   - Production model export (`.pt`) and inference benchmark
   - Final documentation and deployment sign-off
 
