@@ -4,7 +4,7 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.6.0%2Bcu124-EE4C2C.svg)](https://pytorch.org/)
 [![CUDA](https://img.shields.io/badge/CUDA-12.4-76B900.svg)](https://developer.nvidia.com/cuda-toolkit)
 [![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-47%20Passed-0A9EDC.svg)](https://docs.pytest.org/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-59%20Passed-0A9EDC.svg)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 An end-to-end, production-grade deep learning system for automated spatial defect pattern classification on semiconductor wafer maps from the benchmark **WM-811K (LSWMD)** dataset. Designed with rigorous data hygiene to eliminate lot-level data leakage, domain-specific preprocessing, multi-class Focal Loss for severe class imbalance, Explainable AI (Grad-CAM), and an interactive Streamlit engineering dashboard.
@@ -320,14 +320,39 @@ python scripts/audit_pipeline.py
   - Operational Efficiency: GPU throughput **1,848.3 wafers/sec** (Average latency **0.1634 ms** / wafer, Peak VRAM **148.1 MB**); CPU throughput **274.5 wafers/sec**
   - Model Calibration: Expected Calibration Error (ECE) = **1.64%** ($M=15$ bins)
   - Full benchmark report archived in [`docs/experiments/final_test_evaluation.md`](docs/experiments/final_test_evaluation.md)
-- [ ] **Phase 8: Production Streamlit Dashboard (WaferVision AI)**
-  - Single wafer upload and live diagnosis interface
-  - 25-wafer lot cassette inspection and yield tracking
-  - Live model performance metrics and interactive confusion matrix
-  - WM-811K visual dataset explorer
-- [ ] **Phase 9: Quality Assurance, Model Export & Final Documentation**
+- [x] **Phase 8: Deployment & Interactive Wafer Defect Detection Application (WaferVision AI)**
+  - Full-featured industrial Streamlit dashboard in [`app/main.py`](app/main.py)
+  - Modular service architecture: `WaferPreprocessingService`, `WaferInferenceService`, `WaferExplainabilityService`
+  - Interactive Grad-CAM explainability targeting `features.conv_block4` with counterfactual class exploration and die-preserving overlay
+  - Dual input modalities: Custom file upload (PNG, JPG, BMP, NPY) and 9 canonical demonstration sample wafers
+  - Historical held-out test performance metrics and confusion matrix viewer
+  - Convenience runner: `python scripts/run_app.py` or `streamlit run app/main.py`
+  - Comprehensive user guide archived in [`docs/deployment/application_guide.md`](docs/deployment/application_guide.md)
+- [ ] **Phase 9: Quality Assurance, Final Verification & Deployment Sign-Off**
   - Production model export (`.pt`) and inference benchmark
   - Final documentation and deployment sign-off
+
+---
+
+## 🚀 Interactive Web Application: WaferVision AI
+
+WaferVision AI is a production-grade local web dashboard for real-time semiconductor wafer defect inspection, probability analysis, and Grad-CAM explainability:
+
+```bash
+# Launch via Streamlit
+streamlit run app/main.py
+
+# Or launch via convenience script
+python scripts/run_app.py
+```
+Open `http://localhost:8501` in your browser.
+
+### Key Capabilities:
+- **Instant Demonstration:** Test all 9 defect classes with 1-click curated demonstration samples without uploading files.
+- **Custom File Upload:** Classify PNG, JPG, BMP, or NumPy (`.npy`) wafer maps with automated validation and Method C letterbox preprocessing.
+- **Explainable AI (Grad-CAM):** View 3-panel spatial attribution maps (Original, Heatmap, Die-Preserving Overlay) with interactive target class selection and alpha slider.
+- **Fab Diagnostics:** Inspect physical failure mechanisms, equipment root causes, and recommended fab actions for each detected defect.
+- **Historical Benchmark Viewer:** Explore sealed held-out test metrics (Accuracy 97.62%, Macro F1 0.8746, ECE 1.64%) and confusion matrices.
 
 ---
 

@@ -1,0 +1,92 @@
+{
+  "none": {
+    "class_index": 0,
+    "class_name": "none",
+    "filename": "sample_0_none.png",
+    "lot_name": "lot20",
+    "original_shape": [
+      26,
+      26
+    ]
+  },
+  "Center": {
+    "class_index": 1,
+    "class_name": "Center",
+    "filename": "sample_1_center.png",
+    "lot_name": "lot30",
+    "original_shape": [
+      26,
+      26
+    ]
+  },
+  "Donut": {
+    "class_index": 2,
+    "class_name": "Donut",
+    "filename": "sample_2_donut.png",
+    "lot_name": "lot1414",
+    "original_shape": [
+      54,
+      71
+    ]
+  },
+  "Edge-Loc": {
+    "class_index": 3,
+    "class_name": "Edge-Loc",
+    "filename": "sample_3_edge_loc.png",
+    "lot_name": "lot20",
+    "original_shape": [
+      26,
+      26
+    ]
+  },
+  "Edge-Ring": {
+    "class_index": 4,
+    "class_name": "Edge-Ring",
+    "filename": "sample_4_edge_ring.png",
+    "lot_name": "lot282",
+    "original_shape": [
+      26,
+      26
+    ]
+  },
+  "Loc": {
+    "class_index": 5,
+    "class_name": "Loc",
+    "filename": "sample_5_loc.png",
+    "lot_name": "lot106",
+    "original_shape": [
+      26,
+      26
+    ]
+  },
+  "Random": {
+    "class_index": 6,
+    "class_name": "Random",
+    "filename": "sample_6_random.png",
+    "lot_name": "lot69",
+    "original_shape": [
+      26,
+      26
+    ]
+  },
+  "Scratch": {
+    "class_index": 7,
+    "class_name": "Scratch",
+    "filename": "sample_7_scratch.png",
+    "lot_name": "lot30",
+    "original_shape": [
+      26,
+      26
+    ]
+  },
+  "Near-full": {
+    "class_index": 8,
+    "class_name": "Near-full",
+    "filename": "sample_8_near_full.png",
+    "lot_name": "lot15361",
+    "original_shape": [
+      50,
+      43
+    ]
+  }
+}
