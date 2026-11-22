@@ -1,5 +1,6 @@
 """Input handling component supporting file uploads and demonstration wafer samples."""
 
+import io
 import json
 from pathlib import Path
 from typing import Any
@@ -107,21 +108,38 @@ def render_input_selector() -> tuple[np.ndarray | None, str, dict[str, Any] | No
         return None, "", None, ""
 
     try:
-        wafer_map = WaferPreprocessingService.load_wafer_from_bytes(
+        wafer_map, meta = WaferPreprocessingService.load_wafer_from_bytes(
             file_bytes=uploaded_file.getvalue(),
             filename=uploaded_file.name,
+            return_metadata=True,
         )
         stats = get_wafer_die_statistics(wafer_map)
+        stats.update(meta)
+
+        # Cache raw PIL image if available for side-by-side inspection
+        try:
+            raw_pil = Image.open(io.BytesIO(uploaded_file.getvalue()))
+            stats["raw_image"] = raw_pil
+        except Exception:
+            stats["raw_image"] = None
+
         sample_id = f"upload_{uploaded_file.name}_{uploaded_file.size}"
+
+        palette_str = meta.get("palette_name", "Standard")
+        orig_dim = meta.get("original_dimensions", list(wafer_map.shape))
+        orig_dim_str = f"{orig_dim[0]}×{orig_dim[1]}" if len(orig_dim) == 2 else f"{orig_dim}"
 
         st.markdown(
             f"""
             <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 14px; margin-top: 6px;">
-                <span class="status-badge-clean">FILE VERIFIED</span>
+                <span class="status-badge-clean">FILE VERIFIED & DECODED</span>
                 <span style="font-weight: 700; color: #166534; margin-left: 8px;">{uploaded_file.name}</span>
                 <span style="color: #475569; font-size: 0.85rem; margin-left: 8px;">
-                    ({wafer_map.shape[0]}×{wafer_map.shape[1]} grid, {stats["total_active_dies"]:,} active dies, {stats["defect_rate_pct"]:.2f}% defect rate)
+                    (Input: {orig_dim_str} px | Reconstructed Grid: {wafer_map.shape[0]}×{wafer_map.shape[1]} dies | Palette: {palette_str})
                 </span>
+                <div style="font-size: 0.80rem; color: #15803d; margin-top: 4px;">
+                    ✓ Categorical die cells: {stats["total_active_dies"]:,} active ({stats["normal_dies"]:,} normal, {stats["defective_dies"]:,} defect | {stats["defect_rate_pct"]:.2f}% defect rate)
+                </div>
             </div>
             """,
             unsafe_allow_html=True,

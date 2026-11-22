@@ -133,24 +133,57 @@ def main():
             col_preview, col_action = st.columns([1.1, 1.9])
 
             with col_preview:
-                st.markdown("##### 🖨️ Wafer Die Grid Preview")
+                st.markdown("##### 🖨️ Wafer Input & Grid Reconstruction")
+                raw_img = stats.get("raw_image")
                 pil_display = wafer_to_pil(wafer_map, scale=4)
-                st.image(
-                    pil_display,
-                    caption=f"{source_desc} (Native: {wafer_map.shape[0]}×{wafer_map.shape[1]} dies)",
-                    use_container_width=True,
-                )
+                if raw_img is not None:
+                    tab_recon, tab_orig = st.tabs(["Reconstructed Grid", "Original Input"])
+                    with tab_recon:
+                        st.image(
+                            pil_display,
+                            caption=f"Decoded Die Grid ({wafer_map.shape[0]}×{wafer_map.shape[1]} dies)",
+                            use_container_width=True,
+                        )
+                    with tab_orig:
+                        st.image(
+                            raw_img,
+                            caption=f"Original File ({raw_img.width}×{raw_img.height} px)",
+                            use_container_width=True,
+                        )
+                else:
+                    st.image(
+                        pil_display,
+                        caption=f"{source_desc} ({wafer_map.shape[0]}×{wafer_map.shape[1]} dies)",
+                        use_container_width=True,
+                    )
 
             with col_action:
                 st.markdown("##### 📊 Wafer Die Morphology Summary")
 
-                stat_col1, stat_col2 = st.columns(2)
-                stat_col1.metric("Active Silicon Dies", f"{stats['total_active_dies']:,}")
-                stat_col1.metric("Functional Dies", f"{stats['normal_dies']:,}")
-                stat_col2.metric("Defective Dies", f"{stats['defective_dies']:,}")
-                stat_col2.metric("Die Defect Rate", f"{stats['defect_rate_pct']:.2f}%")
+                stat_col1, stat_col2, stat_col3 = st.columns(3)
+                total_cells = stats.get("total_grid_cells", wafer_map.size)
+                ext_cells = stats.get("exterior_cells", stats.get("exterior_pixels", 0))
 
-                st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+                stat_col1.metric("Total Grid Cells", f"{total_cells:,}")
+                stat_col1.metric("Exterior Cells", f"{ext_cells:,}")
+
+                stat_col2.metric("Active Silicon Dies", f"{stats['total_active_dies']:,}")
+                stat_col2.metric("Functional Dies", f"{stats['normal_dies']:,}")
+
+                stat_col3.metric("Defective Dies", f"{stats['defective_dies']:,}")
+                stat_col3.metric("Die Defect Rate", f"{stats['defect_rate_pct']:.2f}%")
+
+                if "palette_name" in stats:
+                    orig_dims = stats.get(
+                        "original_dimensions", [wafer_map.shape[1], wafer_map.shape[0]]
+                    )
+                    st.caption(
+                        f"🎨 **Color Palette:** {stats['palette_name']} | "
+                        f"**Input:** {orig_dims[0]}×{orig_dims[1]} px → "
+                        f"**Grid:** {wafer_map.shape[0]}×{wafer_map.shape[1]} dies"
+                    )
+
+                st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
                 # Primary Action Button
                 analyze_clicked = st.button(

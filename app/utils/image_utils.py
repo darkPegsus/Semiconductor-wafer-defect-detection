@@ -71,6 +71,7 @@ def get_wafer_die_statistics(wafer_map: np.ndarray) -> dict[str, Any]:
         Dictionary containing counts of total dies, normal dies, defective dies, and defect rate.
     """
     int_map = np.rint(wafer_map).astype(np.int32)
+    total_grid_cells = int(int_map.size)
     exterior_count = int(np.sum(int_map == 0))
     normal_count = int(np.sum(int_map == 1))
     defect_count = int(np.sum(int_map >= 2))
@@ -79,8 +80,10 @@ def get_wafer_die_statistics(wafer_map: np.ndarray) -> dict[str, Any]:
 
     return {
         "canvas_size": list(wafer_map.shape),
+        "total_grid_cells": total_grid_cells,
         "total_active_dies": total_active_dies,
-        "exterior_pixels": exterior_count,
+        "exterior_cells": exterior_count,
+        "exterior_pixels": exterior_count,  # backward compatibility alias
         "normal_dies": normal_count,
         "defective_dies": defect_count,
         "defect_rate_pct": round(defect_rate_pct, 2),

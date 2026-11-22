@@ -1,13 +1,17 @@
 """Unit tests for wafer preprocessing and input validation service."""
 
 import io
+from pathlib import Path
 
 import numpy as np
 import pytest
 import torch
 from PIL import Image
 
+from app.services.inference_service import WaferInferenceService
 from app.services.preprocessing_service import WaferPreprocessingService
+from app.utils.image_utils import get_wafer_die_statistics
+from app.utils.model_loader import load_frozen_model
 
 
 @pytest.fixture
@@ -65,6 +69,74 @@ def test_pil_to_wafer_map_rgb():
     assert wafer_map[20, 20] == 2  # defect die
 
 
+def test_decode_categorical_rgb_viridis():
+    """Verify Viridis palette decoding (Purple 0, Teal 1, Yellow 2)."""
+    rgb = np.zeros((30, 30, 3), dtype=np.uint8)
+    rgb[:, :] = [68, 1, 84]  # Purple exterior
+    rgb[5:25, 5:25] = [32, 144, 140]  # Teal normal
+    rgb[10:15, 10:15] = [253, 231, 36]  # Yellow defect
+
+    decoded, palette, ratio = WaferPreprocessingService.decode_categorical_rgb(rgb)
+    assert palette == "viridis"
+    assert ratio == 0.0
+    assert decoded[0, 0] == 0
+    assert decoded[7, 7] == 1
+    assert decoded[12, 12] == 2
+
+
+def test_decode_categorical_rgb_high_contrast():
+    """Verify High-contrast palette decoding (Black 0, Green 1, Red 2)."""
+    rgb = np.zeros((30, 30, 3), dtype=np.uint8)
+    rgb[:, :] = [0, 0, 0]  # Black
+    rgb[5:25, 5:25] = [0, 200, 0]  # Green
+    rgb[10:15, 10:15] = [200, 0, 0]  # Red
+
+    decoded, palette, ratio = WaferPreprocessingService.decode_categorical_rgb(rgb)
+    assert palette == "high_contrast_green_red"
+    assert ratio == 0.0
+    assert decoded[0, 0] == 0
+    assert decoded[7, 7] == 1
+    assert decoded[12, 12] == 2
+
+
+def test_decode_categorical_rgb_rejection():
+    """Verify rejection of non-wafer, arbitrary color images exceeding color tolerance."""
+    # Arbitrary random colors
+    np.random.seed(42)
+    random_img = np.random.randint(0, 256, (64, 64, 3), dtype=np.uint8)
+    with pytest.raises(ValueError, match="does not match any recognized semiconductor"):
+        WaferPreprocessingService.decode_categorical_rgb(random_img)
+
+
+def test_reconstruct_die_grid_majority_voting():
+    """Verify block majority voting correctly downsamples multi-pixel cells."""
+    # 60x60 grid with 10x10 die blocks -> downsamples to 6x6
+    pixel_map = np.zeros((60, 60), dtype=np.uint8)
+    # Cell (2, 2): majority normal (1)
+    pixel_map[20:30, 20:30] = 1
+    # Add minor noise in the cell that should be suppressed by majority voting
+    pixel_map[20:22, 20:22] = 2
+
+    # Cell (4, 4): majority defect (2)
+    pixel_map[40:50, 40:50] = 2
+
+    reconstructed = WaferPreprocessingService.reconstruct_die_grid(pixel_map, target_grid=(6, 6))
+    assert reconstructed.shape == (6, 6)
+    assert reconstructed[0, 0] == 0
+    assert reconstructed[2, 2] == 1  # noise 2 suppressed by majority vote
+    assert reconstructed[4, 4] == 2
+
+
+def test_reconstruct_die_grid_passthrough():
+    """Verify that native wafer grids (<= 64x64) are preserved without modification."""
+    native_arr = np.zeros((41, 33), dtype=np.uint8)
+    native_arr[10, 10] = 1
+    native_arr[20, 20] = 2
+    res = WaferPreprocessingService.reconstruct_die_grid(native_arr)
+    assert res.shape == (41, 33)
+    assert np.array_equal(res, native_arr)
+
+
 def test_load_wafer_from_bytes_png(synthetic_wafer_2d):
     """Verify loading from PNG bytes stream."""
     pil_img = Image.fromarray(synthetic_wafer_2d * 100)  # scale to 8-bit
@@ -89,3 +161,41 @@ def test_corrupted_bytes_handling():
     corrupted = b"NOT_A_VALID_IMAGE_DATA_BYTES"
     with pytest.raises(ValueError, match="Unsupported or corrupted image"):
         WaferPreprocessingService.load_wafer_from_bytes(corrupted, filename="bad.png")
+
+
+def test_near_full_640_sample_integration():
+    """Critical end-to-end bug fix test: verify 640x640 Near-full sample is correctly decoded and classified."""
+    sample_path = Path("tests/data/sample_640_near_full.jpg")
+    if not sample_path.exists():
+        pytest.skip(f"Test image {sample_path} not available.")
+
+    with open(sample_path, "rb") as f:
+        file_bytes = f.read()
+
+    wafer_map, meta = WaferPreprocessingService.load_wafer_from_bytes(
+        file_bytes=file_bytes, filename="sample_640_near_full.jpg", return_metadata=True
+    )
+
+    # 1. Verify palette decoding
+    assert meta["detected_palette"] == "viridis"
+    assert meta["unmatched_ratio"] < 0.05  # < 5% edge pixels unmatched
+
+    # 2. Verify grid reconstruction shape
+    assert wafer_map.shape == (64, 64)
+
+    # 3. Verify morphology die counts (defect rate should be ~78%, NOT 0.16%)
+    stats = get_wafer_die_statistics(wafer_map)
+    assert stats["total_active_dies"] > 3000
+    assert stats["defective_dies"] > 2000
+    assert stats["defect_rate_pct"] > 70.0
+
+    # 4. End-to-end model inference with frozen CustomWaferCNN checkpoint
+    model, _, _ = load_frozen_model(device="cpu")
+    _, tensor_batch = WaferPreprocessingService.preprocess_for_inference(wafer_map)
+    pred_result = WaferInferenceService.predict(
+        model=model, input_tensor=tensor_batch, device="cpu"
+    )
+
+    # The prediction MUST be 'Near-full' with high confidence (> 90%)
+    assert pred_result["predicted_class"] == "Near-full"
+    assert pred_result["confidence"] > 0.90
