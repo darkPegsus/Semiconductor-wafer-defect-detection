@@ -28,11 +28,11 @@ def main():
         "streamlit",
         "run",
         str(app_path),
-        "--theme.base=dark",
-        "--theme.primaryColor=#00d4ff",
-        "--theme.backgroundColor=#0b0f19",
-        "--theme.secondaryBackgroundColor=#121826",
-        "--theme.textColor=#f1f5f9",
+        "--theme.base=light",
+        "--theme.primaryColor=#0284c7",
+        "--theme.backgroundColor=#f8fafc",
+        "--theme.secondaryBackgroundColor=#ffffff",
+        "--theme.textColor=#0f172a",
     ]
 
     try:

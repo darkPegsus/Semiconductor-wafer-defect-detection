@@ -336,23 +336,27 @@ python scripts/audit_pipeline.py
 
 ## 🚀 Interactive Web Application: WaferVision AI
 
-WaferVision AI is a production-grade local web dashboard for real-time semiconductor wafer defect inspection, probability analysis, and Grad-CAM explainability:
+WaferVision AI is an industrial-grade semiconductor wafer defect inspection application designed with a high-contrast, clean light industrial interface for real-time defect pattern classification and Grad-CAM spatial explainability:
 
 ```bash
 # Launch via Streamlit
 streamlit run app/main.py
 
-# Or launch via convenience script
+# Or launch via convenience runner script
 python scripts/run_app.py
 ```
 Open `http://localhost:8501` in your browser.
 
-### Key Capabilities:
-- **Instant Demonstration:** Test all 9 defect classes with 1-click curated demonstration samples without uploading files.
-- **Custom File Upload:** Classify PNG, JPG, BMP, or NumPy (`.npy`) wafer maps with automated validation and Method C letterbox preprocessing.
-- **Explainable AI (Grad-CAM):** View 3-panel spatial attribution maps (Original, Heatmap, Die-Preserving Overlay) with interactive target class selection and alpha slider.
-- **Fab Diagnostics:** Inspect physical failure mechanisms, equipment root causes, and recommended fab actions for each detected defect.
-- **Historical Benchmark Viewer:** Explore sealed held-out test metrics (Accuracy 97.62%, Macro F1 0.8746, ECE 1.64%) and confusion matrices.
+### Key Capabilities & UI Design:
+- **Clean Light Industrial Interface:** Professional high-contrast aesthetic (`#f8fafc` canvas, `#ffffff` panels, `#0f172a` typography, `#0284c7` accents) designed for cleanroom operator stations and laptop displays.
+- **Operational Inspection Workflow:** Primary page centered directly around wafer input, die morphology summary, and a prominent **`ANALYZE WAFER`** action button.
+- **Instant Demonstration Samples:** 1-Click evaluation across all 9 canonical defect classes using curated benchmark validation samples.
+- **Custom Wafer Upload:** Drag-and-drop support for PNG, JPG, BMP, and NumPy (`.npy`) wafer maps with immediate dimension validation and discrete die parsing.
+- **High-Hierarchy Classification Results:** Displays predicted defect status, model confidence (softmax), GPU/CPU latency, and responsive horizontal 9-class probability bar chart.
+- **Neutral Inspection Notes:** Factual engineering guidance and review advisories (flagging low-confidence predictions, ambiguous second runners-up, or known sensitivity boundaries) without unsupported equipment root-cause assertions.
+- **Explainable AI (Grad-CAM):** 3-panel side-by-side visualization (Original Wafer, Grad-CAM Heatmap, Die-Preserving Overlay) with interactive target class selector and alpha opacity controls.
+- **Historical Benchmark Viewer:** Dedicated performance view presenting sealed held-out test metrics (Accuracy 97.62%, Macro F1 0.8746, ECE 1.64%), per-class performance table, and confusion matrix.
+- **Comprehensive User Guide & Screenshots:** Complete documentation in [`docs/deployment/application_guide.md`](docs/deployment/application_guide.md) and screenshots in [`docs/deployment/screenshots/`](docs/deployment/screenshots/).
 
 ---
 
