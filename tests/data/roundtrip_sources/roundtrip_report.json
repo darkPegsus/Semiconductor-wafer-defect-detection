@@ -1,0 +1,938 @@
+[
+  {
+    "pattern": "none",
+    "lot": "lot20",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "none",
+    "lot": "lot20",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "none",
+    "lot": "lot20",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "none",
+    "lot": "lot20",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Center",
+    "lot": "lot30",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Center",
+    "lot": "lot30",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Center",
+    "lot": "lot30",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Center",
+    "lot": "lot30",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Donut",
+    "lot": "lot1414",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      54,
+      71
+    ],
+    "reconstructed_dimensions": [
+      54,
+      71
+    ],
+    "total_cells": 3834,
+    "matching_cells": 3834,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Donut",
+    "lot": "lot1414",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      54,
+      71
+    ],
+    "reconstructed_dimensions": [
+      54,
+      71
+    ],
+    "total_cells": 3834,
+    "matching_cells": 3834,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Donut",
+    "lot": "lot1414",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      54,
+      71
+    ],
+    "reconstructed_dimensions": [
+      54,
+      71
+    ],
+    "total_cells": 3834,
+    "matching_cells": 3834,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Donut",
+    "lot": "lot1414",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      54,
+      71
+    ],
+    "reconstructed_dimensions": [
+      54,
+      71
+    ],
+    "total_cells": 3834,
+    "matching_cells": 3834,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Loc",
+    "lot": "lot20",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Loc",
+    "lot": "lot20",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Loc",
+    "lot": "lot20",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Loc",
+    "lot": "lot20",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Ring",
+    "lot": "lot282",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Ring",
+    "lot": "lot282",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Ring",
+    "lot": "lot282",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Edge-Ring",
+    "lot": "lot282",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Loc",
+    "lot": "lot106",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Loc",
+    "lot": "lot106",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Loc",
+    "lot": "lot106",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Loc",
+    "lot": "lot106",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Random",
+    "lot": "lot69",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Random",
+    "lot": "lot69",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Random",
+    "lot": "lot69",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Random",
+    "lot": "lot69",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Scratch",
+    "lot": "lot30",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Scratch",
+    "lot": "lot30",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Scratch",
+    "lot": "lot30",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Scratch",
+    "lot": "lot30",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      26,
+      26
+    ],
+    "reconstructed_dimensions": [
+      26,
+      26
+    ],
+    "total_cells": 676,
+    "matching_cells": 676,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Near-full",
+    "lot": "lot15361",
+    "palette_key": "viridis",
+    "palette_name": "Viridis (WM-811K / Scientific)",
+    "original_dimensions": [
+      50,
+      43
+    ],
+    "reconstructed_dimensions": [
+      50,
+      43
+    ],
+    "total_cells": 2150,
+    "matching_cells": 2150,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "viridis",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Near-full",
+    "lot": "lot15361",
+    "palette_key": "red_gray_dark",
+    "palette_name": "Red-Gray-Dark (WaferVision Standard)",
+    "original_dimensions": [
+      50,
+      43
+    ],
+    "reconstructed_dimensions": [
+      50,
+      43
+    ],
+    "total_cells": 2150,
+    "matching_cells": 2150,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "red_gray_dark",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Near-full",
+    "lot": "lot15361",
+    "palette_key": "high_contrast_green_red",
+    "palette_name": "High-Contrast Green/Red/Black",
+    "original_dimensions": [
+      50,
+      43
+    ],
+    "reconstructed_dimensions": [
+      50,
+      43
+    ],
+    "total_cells": 2150,
+    "matching_cells": 2150,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "high_contrast_green_red",
+    "unmatched_pixel_ratio": 0.0
+  },
+  {
+    "pattern": "Near-full",
+    "lot": "lot15361",
+    "palette_key": "white_background_red_gray",
+    "palette_name": "White-Background Red/Gray",
+    "original_dimensions": [
+      50,
+      43
+    ],
+    "reconstructed_dimensions": [
+      50,
+      43
+    ],
+    "total_cells": 2150,
+    "matching_cells": 2150,
+    "mismatched_cells": 0,
+    "reconstruction_accuracy_pct": 100.0,
+    "per_category_mismatches": {
+      "cat_0_exterior": 0,
+      "cat_1_normal": 0,
+      "cat_2_defect": 0
+    },
+    "orientation_preserved": true,
+    "detected_palette": "white_background_red_gray",
+    "unmatched_pixel_ratio": 0.0
+  }
+]

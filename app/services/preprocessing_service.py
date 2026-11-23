@@ -163,14 +163,14 @@ class WaferPreprocessingService:
         h, w = pixel_map.shape
 
         if target_grid is None:
-            # If already at or below canonical wafer grid resolution (<= 64x64), keep native dies
-            if h <= 64 and w <= 64:
+            # If native or near-native resolution, keep original die cells
+            factor = max(1, int(round(max(h, w) / 64.0)))
+            if factor <= 1 or max(h, w) <= 100:
                 return pixel_map.astype(np.uint8)
 
             # Invert integer downsampling factor (e.g. 640x640 -> factor 10 -> 64x64)
-            factor = max(1, int(round(max(h, w) / 64.0)))
-            gh = min(64, max(8, int(round(h / factor))))
-            gw = min(64, max(8, int(round(w / factor))))
+            gh = max(8, int(round(h / factor)))
+            gw = max(8, int(round(w / factor)))
             target_grid = (gh, gw)
 
         gh, gw = target_grid
