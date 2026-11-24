@@ -4,7 +4,7 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.6.0%2Bcu124-EE4C2C.svg)](https://pytorch.org/)
 [![CUDA](https://img.shields.io/badge/CUDA-12.4-76B900.svg)](https://developer.nvidia.com/cuda-toolkit)
 [![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-59%20Passed-0A9EDC.svg)](https://docs.pytest.org/)
+[![Tests: Pytest](https://img.shields.io/badge/Tests-134%20Passed-0A9EDC.svg)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 An end-to-end, production-grade deep learning system for automated spatial defect pattern classification on semiconductor wafer maps from the benchmark **WM-811K (LSWMD)** dataset. Designed with rigorous data hygiene to eliminate lot-level data leakage, domain-specific preprocessing, multi-class Focal Loss for severe class imbalance, Explainable AI (Grad-CAM), and an interactive Streamlit engineering dashboard.
@@ -328,6 +328,15 @@ python scripts/audit_pipeline.py
   - Historical held-out test performance metrics and confusion matrix viewer
   - Convenience runner: `python scripts/run_app.py` or `streamlit run app/main.py`
   - Comprehensive user guide archived in [`docs/deployment/application_guide.md`](docs/deployment/application_guide.md)
+- [x] **Phase 8B: Lossless Color Decoding & Spatial Die Grid Reconstruction**
+  - Resolved RGB color decoding errors on multi-pixel upscaled wafer images via automated palette detection (Viridis, Red-Gray, Green-Red, White-Background)
+  - Implemented spatial die lattice detection and block-level majority voting, achieving 100% exact round-trip cell recovery across all defect patterns
+  - Full audit documented in [`docs/deployment/color_decoding_roundtrip_report.md`](docs/deployment/color_decoding_roundtrip_report.md)
+- [x] **Phase 8C: End-to-End Application Acceptance Testing & Validation**
+  - Rigorous 20-criterion verification across model integrity (SHA-256: `b9df80...`), input modalities, error handling, 9 defect classes, CPU/CUDA hardware parity, and visual UI compliance
+  - Full integration test suite created in [`tests/integration/test_end_to_end_inference.py`](tests/integration/test_end_to_end_inference.py) (134 total tests passing in 18s)
+  - Verified edge hardware performance: 1.94 ms mean latency on RTX 2050 GPU (22.1 MB VRAM) and 2.90 ms on CPU
+  - Comprehensive acceptance report and visual proofs archived in [`docs/deployment/acceptance_test_report.md`](docs/deployment/acceptance_test_report.md) and [`docs/deployment/screenshots/`](docs/deployment/screenshots/)
 - [ ] **Phase 9: Quality Assurance, Final Verification & Deployment Sign-Off**
   - Production model export (`.pt`) and inference benchmark
   - Final documentation and deployment sign-off
@@ -351,12 +360,37 @@ Open `http://localhost:8501` in your browser.
 - **Clean Light Industrial Interface:** Professional high-contrast aesthetic (`#f8fafc` canvas, `#ffffff` panels, `#0f172a` typography, `#0284c7` accents) designed for cleanroom operator stations and laptop displays.
 - **Operational Inspection Workflow:** Primary page centered directly around wafer input, die morphology summary, and a prominent **`ANALYZE WAFER`** action button.
 - **Instant Demonstration Samples:** 1-Click evaluation across all 9 canonical defect classes using curated benchmark validation samples.
-- **Custom Wafer Upload:** Drag-and-drop support for PNG, JPG, BMP, and NumPy (`.npy`) wafer maps with immediate dimension validation and discrete die parsing.
+- **Flexible Multi-Modality Ingestion:** Direct parsing of raw numerical arrays (`.npy`), single-die pixel images, and upscaled multi-pixel die blocks ($2\times, 4\times, 10\times$ per die) with automated majority voting.
+- **Automated Palette Calibration:** Zero-config color segmentation for four industrial palettes: **Viridis**, **Red-Gray Dark**, **High-Contrast Green-Red**, and **White-Background Red/Gray**.
 - **High-Hierarchy Classification Results:** Displays predicted defect status, model confidence (softmax), GPU/CPU latency, and responsive horizontal 9-class probability bar chart.
-- **Neutral Inspection Notes:** Factual engineering guidance and review advisories (flagging low-confidence predictions, ambiguous second runners-up, or known sensitivity boundaries) without unsupported equipment root-cause assertions.
+- **Neutral Inspection Notes:** Factual engineering guidance and review advisories without unsupported equipment root-cause assertions.
 - **Explainable AI (Grad-CAM):** 3-panel side-by-side visualization (Original Wafer, Grad-CAM Heatmap, Die-Preserving Overlay) with interactive target class selector and alpha opacity controls.
 - **Historical Benchmark Viewer:** Dedicated performance view presenting sealed held-out test metrics (Accuracy 97.62%, Macro F1 0.8746, ECE 1.64%), per-class performance table, and confusion matrix.
-- **Comprehensive User Guide & Screenshots:** Complete documentation in [`docs/deployment/application_guide.md`](docs/deployment/application_guide.md) and screenshots in [`docs/deployment/screenshots/`](docs/deployment/screenshots/).
+- **Negative Input Rejection:** Robust client-side validation rejecting corrupted files, empty payloads, natural continuous-tone photographs, uncalibrated palettes, and out-of-spec dimensions (<8px or >2048px).
+
+### Hardware Benchmark Profile (N = 50 runs)
+
+| Metric | CPU (Intel Core i5-12450H) | CUDA (NVIDIA GeForce RTX 2050) |
+| :--- | :---: | :---: |
+| **Model Load Time** | 50.78 ms | 164.62 ms |
+| **Inference Latency (Mean)** | 2.902 ms | 1.943 ms |
+| **Inference Latency (P50)** | 2.466 ms | 1.162 ms |
+| **Inference Latency (P95)** | 4.332 ms | 2.390 ms |
+| **Inference Latency (P99)** | 7.569 ms | 16.606 ms |
+| **Grad-CAM Latency (Mean)** | 9.480 ms | 12.005 ms |
+| **Peak GPU VRAM Allocated** | — | 22.10 MB |
+| **Peak GPU VRAM Reserved** | — | 46.00 MB |
+| **Logit Numerical Parity** | Baseline | Max difference $< 8 \times 10^{-6}$ |
+
+### Visual Documentation & Screenshots
+
+Detailed UI screenshots and acceptance artifacts are available in [`docs/deployment/screenshots/`](docs/deployment/screenshots/):
+- **Initial Inspection State:** [`screenshot_1_inspection_before_prediction.png`](docs/deployment/screenshots/screenshot_1_inspection_before_prediction.png)
+- **Defect Classification & Confidence Gauge:** [`screenshot_2_inspection_after_prediction.png`](docs/deployment/screenshots/screenshot_2_inspection_after_prediction.png)
+- **Grad-CAM Spatial Defect Heatmap:** [`screenshot_3_gradcam_visualization.png`](docs/deployment/screenshots/screenshot_3_gradcam_visualization.png)
+- **Model Test Metrics & Confusion Matrix:** [`screenshot_4_model_performance.png`](docs/deployment/screenshots/screenshot_4_model_performance.png) & [`screenshot_4b_confusion_matrix.png`](docs/deployment/screenshots/screenshot_4b_confusion_matrix.png)
+- **Input Error Handling:** [`screenshot_5_invalid_input_error.png`](docs/deployment/screenshots/screenshot_5_invalid_input_error.png)
+- **About & Architecture Reference:** [`screenshot_6_about_page.png`](docs/deployment/screenshots/screenshot_6_about_page.png)
 
 ---
 
@@ -372,10 +406,13 @@ ruff format --check .
 ruff format .
 ```
 
-Run test suite via Pytest:
+Run complete test suite (134 unit and integration tests):
 ```bash
-# Run all unit tests
-pytest tests/unit -v
+# Run all unit and integration tests
+pytest tests/ -v
+
+# Run end-to-end acceptance tests specifically
+pytest tests/integration/test_end_to_end_inference.py -v
 
 # Run tests with coverage report
 pytest --cov=src --cov-report=term-missing

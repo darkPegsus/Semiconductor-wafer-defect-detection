@@ -388,7 +388,9 @@ class WaferPreprocessingService:
             norm_arr[int_arr >= 2] = 2
             int_arr = norm_arr
 
-        return cls.reconstruct_die_grid(int_arr, target_grid=target_grid)
+        if target_grid is not None:
+            return cls.reconstruct_die_grid(int_arr, target_grid=target_grid)
+        return int_arr
 
     @classmethod
     def preprocess_for_inference(

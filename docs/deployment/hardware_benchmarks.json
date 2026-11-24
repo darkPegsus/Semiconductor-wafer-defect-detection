@@ -1,0 +1,28 @@
+{
+  "cpu": {
+    "device": "cpu",
+    "load_time_ms": 50.78,
+    "inference_mean_ms": 2.902,
+    "inference_p50_ms": 2.466,
+    "inference_p95_ms": 4.332,
+    "inference_p99_ms": 7.569,
+    "gradcam_mean_ms": 9.48,
+    "gradcam_p50_ms": 7.133,
+    "gradcam_p95_ms": 8.289,
+    "gpu_allocated_mb": 0.0,
+    "gpu_reserved_mb": 0.0
+  },
+  "cuda": {
+    "device": "cuda",
+    "load_time_ms": 164.62,
+    "inference_mean_ms": 1.943,
+    "inference_p50_ms": 1.162,
+    "inference_p95_ms": 2.39,
+    "inference_p99_ms": 16.606,
+    "gradcam_mean_ms": 12.005,
+    "gradcam_p50_ms": 6.198,
+    "gradcam_p95_ms": 7.804,
+    "gpu_allocated_mb": 22.1,
+    "gpu_reserved_mb": 46.0
+  }
+}

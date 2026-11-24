@@ -10,9 +10,21 @@ with open(report_path) as f:
 print(f"Total test cases evaluated: {len(data)}\n")
 
 # Group by pattern
-patterns = ["Near-full", "Scratch", "Loc", "Center", "Edge-Ring", "none", "Donut", "Edge-Loc", "Random"]
+patterns = [
+    "Near-full",
+    "Scratch",
+    "Loc",
+    "Center",
+    "Edge-Ring",
+    "none",
+    "Donut",
+    "Edge-Loc",
+    "Random",
+]
 
-print("| Defect Pattern | Palette | Original Grid | Reconstructed Grid | Total Cells | Exact Matches | Mismatches | Reconstruction Accuracy | Per-Category Mismatches (0 / 1 / 2) | Orientation Preserved |")
+print(
+    "| Defect Pattern | Palette | Original Grid | Reconstructed Grid | Total Cells | Exact Matches | Mismatches | Reconstruction Accuracy | Per-Category Mismatches (0 / 1 / 2) | Orientation Preserved |"
+)
 print("| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
 
 for p in patterns:
@@ -31,4 +43,6 @@ for p in patterns:
         c2 = r["per_category_mismatches"]["cat_2_defect"]
         cats = f"0={c0}, 1={c1}, 2={c2}"
         orient = "✅ Preserved" if r["orientation_preserved"] else "❌ Failed"
-        print(f"| **{pat}** | {pal} | {orig} | {recon} | {tot} | {match} | {mism} | **{acc}** | {cats} | {orient} |")
+        print(
+            f"| **{pat}** | {pal} | {orig} | {recon} | {tot} | {match} | {mism} | **{acc}** | {cats} | {orient} |"
+        )

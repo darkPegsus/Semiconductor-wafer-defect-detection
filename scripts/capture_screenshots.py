@@ -287,8 +287,78 @@ def main():
         })()
         """)
         time.sleep(1)
-        shot5 = OUTPUT_DIR / "screenshot_5_about_page.png"
-        cdp.screenshot(shot5)
+        shot5_about = OUTPUT_DIR / "screenshot_6_about_page.png"
+        cdp.screenshot(shot5_about)
+
+        # ---------------------------------------------------------------------
+        # Navigate back to Inspection page to capture Invalid-Input Error State
+        # ---------------------------------------------------------------------
+        print("Navigating to 'Wafer Inspection' to test invalid input error...")
+        click_inspect_js = """
+        (() => {
+            const labels = Array.from(document.querySelectorAll('section[data-testid="stSidebar"] div[role="radiogroup"] label'));
+            const insLabel = labels.find(l => l.innerText.includes('Wafer Inspection'));
+            if (insLabel) {
+                insLabel.click();
+                return 'clicked_inspection';
+            }
+            return 'inspection_not_found';
+        })()
+        """
+        cdp.evaluate(click_inspect_js)
+        time.sleep(2)
+
+        print("Switching to 'Upload Custom Wafer Map' mode...")
+        click_upload_mode_js = """
+        (() => {
+            const labels = Array.from(document.querySelectorAll('div[data-testid="stRadio"] label'));
+            const upLabel = labels.find(l => l.innerText.includes('Upload Custom Wafer Map'));
+            if (upLabel) {
+                upLabel.click();
+                return 'clicked_upload_mode';
+            }
+            return 'upload_mode_not_found';
+        })()
+        """
+        cdp.evaluate(click_upload_mode_js)
+        time.sleep(2)
+
+        invalid_file = PROJECT_ROOT / "tests" / "data" / "invalid_sample.png"
+        if invalid_file.exists():
+            print(f"Uploading invalid file: {invalid_file}...")
+            doc = cdp.send("DOM.getDocument")
+            root_node_id = doc.get("root", {}).get("nodeId", 1)
+            file_node = cdp.send(
+                "DOM.querySelector",
+                {"nodeId": root_node_id, "selector": 'input[type="file"]'},
+            )
+            node_id = file_node.get("nodeId")
+            if node_id:
+                cdp.send(
+                    "DOM.setFileInputFiles",
+                    {"files": [str(invalid_file.resolve())], "nodeId": node_id},
+                )
+                print("Dispatched invalid file to Streamlit uploader.")
+
+                for _ in range(15):
+                    time.sleep(1)
+                    err_check = cdp.evaluate(
+                        "document.body.innerText.includes('Input validation failed')"
+                    )
+                    if err_check.get("result", {}).get("value") is True:
+                        print("Validation error rendered in UI!")
+                        break
+
+                time.sleep(2)
+                cdp.evaluate("""
+                (() => {
+                    const el = document.querySelector('section[data-testid="stMain"]') || document.querySelector('.main') || window;
+                    el.scrollTo(0, 0);
+                })()
+                """)
+                time.sleep(1)
+                shot_err = OUTPUT_DIR / "screenshot_5_invalid_input_error.png"
+                cdp.screenshot(shot_err)
 
         cdp.close()
         print("All screenshots successfully captured!")
