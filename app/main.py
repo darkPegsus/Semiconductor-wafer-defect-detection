@@ -21,13 +21,16 @@ from app.components.prediction import (
 )
 from app.components.upload import render_input_selector
 from app.components.visualization import render_explainability_panel
+from app.config import (
+    EXPECTED_CHECKPOINT_SHA256,
+    get_app_config,
+    run_startup_healthcheck,
+)
 from app.services.inference_service import WaferInferenceService
 from app.services.preprocessing_service import WaferPreprocessingService
 from app.styles import LIGHT_INDUSTRIAL_CSS
 from app.utils.image_utils import wafer_to_pil
 from app.utils.model_loader import (
-    DEFAULT_CHECKPOINT_PATH,
-    EXPECTED_CHECKPOINT_SHA256,
     load_frozen_model,
 )
 
@@ -48,10 +51,14 @@ st.markdown(LIGHT_INDUSTRIAL_CSS, unsafe_allow_html=True)
 @st.cache_resource(show_spinner="Verifying checkpoint and initializing CustomWaferCNN engine...")
 def get_model():
     """Cached loader for the frozen CustomWaferCNN baseline model."""
+    config = get_app_config()
+    health_report = run_startup_healthcheck(config)
     model, metadata, device = load_frozen_model(
-        checkpoint_path=DEFAULT_CHECKPOINT_PATH,
-        verify_hash=True,
+        checkpoint_path=config.checkpoint_path,
+        device=config.resolved_device,
+        verify_hash=False,  # Already verified in health check
     )
+    metadata["health_report"] = health_report
     return model, metadata, device
 
 

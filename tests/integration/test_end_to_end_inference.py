@@ -385,3 +385,52 @@ def test_cpu_cuda_inference_and_gradcam_parity(loaded_models):
     # Assert Grad-CAM heatmaps are numerically equivalent within float32 tolerance
     max_cam_diff = float(np.max(np.abs(cpu_cam["heatmap"] - cuda_cam["heatmap"])))
     assert max_cam_diff < 1e-3, f"CPU vs CUDA Grad-CAM heatmap deviation: {max_cam_diff}"
+
+
+# =============================================================================
+# 7. Central Configuration & Startup Health Check Integration Tests
+# =============================================================================
+
+
+def test_startup_healthcheck_success():
+    """Verify that startup health check passes on default system configuration."""
+    from app.config import get_app_config, run_startup_healthcheck
+
+    config = get_app_config()
+    report = run_startup_healthcheck(config)
+    assert report["status"] == "healthy"
+    assert report["total_parameters"] == 520681
+    assert report["trainable_parameters"] == 0
+    assert report["num_classes"] == 9
+    assert report["input_shape"] == [1, 1, 64, 64]
+
+
+def test_startup_healthcheck_device_override():
+    """Verify device override behavior in health check."""
+    from app.config import AppConfig, run_startup_healthcheck
+
+    cpu_config = AppConfig(device_setting="cpu")
+    report = run_startup_healthcheck(cpu_config)
+    assert report["device"] == "cpu"
+    assert report["status"] == "healthy"
+
+
+def test_startup_healthcheck_missing_checkpoint():
+    """Verify health check raises CheckpointNotFoundError when checkpoint is missing."""
+    from app.config import AppConfig, CheckpointNotFoundError, run_startup_healthcheck
+
+    bad_config = AppConfig(checkpoint_path=Path("nonexistent_model.pt"))
+    with pytest.raises(CheckpointNotFoundError, match="Checkpoint not found at"):
+        run_startup_healthcheck(bad_config)
+
+
+def test_startup_healthcheck_checksum_mismatch(tmp_path):
+    """Verify health check raises ModelIntegrityError on SHA-256 hash mismatch."""
+    from app.config import AppConfig, ModelIntegrityError, run_startup_healthcheck
+
+    fake_ckpt = tmp_path / "fake_model.pt"
+    fake_ckpt.write_bytes(b"dummy fake weights")
+
+    bad_config = AppConfig(checkpoint_path=fake_ckpt)
+    with pytest.raises(ModelIntegrityError, match="Cryptographic integrity mismatch"):
+        run_startup_healthcheck(bad_config)
