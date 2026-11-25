@@ -132,6 +132,10 @@ data/processed/*
 *.7z
 *.gz
 
+# Allow test fixture files
+!tests/data/**/*.npy
+!tests/test_fixtures/**/*.npy
+
 # Allow .gitkeep to maintain repository structure
 !data/raw/.gitkeep
 !data/interim/.gitkeep

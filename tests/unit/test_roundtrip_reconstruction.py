@@ -46,6 +46,45 @@ def render_to_palette_rgb(wafer_map: np.ndarray, palette_key: str) -> np.ndarray
     return rgb
 
 
+def _generate_synthetic_wafer_map(pattern: str, height: int = 50, width: int = 50) -> np.ndarray:
+    """Generate a deterministic synthetic wafer map representing the given defect pattern."""
+    arr = np.zeros((height, width), dtype=np.uint8)
+    cy, cx = height // 2, width // 2
+    r = min(cy, cx) - 2
+    y, x = np.ogrid[:height, :width]
+    wafer_mask = ((x - cx) ** 2 + (y - cy) ** 2) <= r**2
+    arr[wafer_mask] = 1
+
+    if pattern == "none":
+        pass
+    elif pattern == "Center":
+        arr[((x - cx) ** 2 + (y - cy) ** 2) <= (r * 0.3) ** 2] = 2
+    elif pattern == "Donut":
+        dist_sq = (x - cx) ** 2 + (y - cy) ** 2
+        arr[(dist_sq >= (r * 0.25) ** 2) & (dist_sq <= (r * 0.55) ** 2)] = 2
+    elif pattern == "Edge-Ring":
+        dist_sq = (x - cx) ** 2 + (y - cy) ** 2
+        arr[(dist_sq >= (r * 0.8) ** 2) & wafer_mask] = 2
+    elif pattern == "Edge-Loc":
+        dist_sq = (x - (cx + r * 0.7)) ** 2 + (y - cy) ** 2
+        arr[(dist_sq <= (r * 0.25) ** 2) & wafer_mask] = 2
+    elif pattern == "Loc":
+        dist_sq = (x - (cx - r * 0.35)) ** 2 + (y - (cy - r * 0.35)) ** 2
+        arr[dist_sq <= (r * 0.25) ** 2] = 2
+    elif pattern == "Random":
+        rng = np.random.RandomState(42)
+        pts = wafer_mask & (rng.rand(height, width) < 0.05)
+        arr[pts] = 2
+    elif pattern == "Scratch":
+        for i in range(12, min(height - 12, width - 12)):
+            if wafer_mask[i, i]:
+                arr[i, i] = 2
+    elif pattern == "Near-full":
+        arr[wafer_mask] = 2
+
+    return arr
+
+
 @pytest.fixture(scope="module")
 def source_wafer_maps() -> dict[str, np.ndarray]:
     """Load or generate representative 2D numerical wafer maps for all 9 classes."""
@@ -59,19 +98,24 @@ def source_wafer_maps() -> dict[str, np.ndarray]:
         if npy_file.exists():
             arr = np.load(npy_file)
         else:
-            # Fallback to extraction from interim labeled dataset
-            from src.data.dataset import load_labeled_dataset
-            from src.data.group_split import load_split_indices
+            # Fallback to extraction from interim labeled dataset if available
+            interim_path = PROJECT_ROOT / "data" / "interim" / "labeled_wafers.pkl"
+            if interim_path.exists():
+                from src.data.dataset import load_labeled_dataset
+                from src.data.group_split import load_split_indices
 
-            df = load_labeled_dataset(PROJECT_ROOT / "data" / "interim" / "labeled_wafers.pkl")
-            splits = load_split_indices(
-                PROJECT_ROOT / "data" / "interim" / "split_indices.json",
-                "group_stratified_70_15_15",
-            )
-            val_df = df.iloc[splits["val"]].reset_index(drop=True)
-            match = val_df[val_df["failureType"] == pattern].iloc[0]
-            arr = match["waferMap"].astype(np.uint8)
-            np.save(npy_file, arr)
+                df = load_labeled_dataset(interim_path)
+                splits = load_split_indices(
+                    PROJECT_ROOT / "data" / "interim" / "split_indices.json",
+                    "group_stratified_70_15_15",
+                )
+                val_df = df.iloc[splits["val"]].reset_index(drop=True)
+                match = val_df[val_df["failureType"] == pattern].iloc[0]
+                arr = match["waferMap"].astype(np.uint8)
+                np.save(npy_file, arr)
+            else:
+                # Deterministic synthetic fallback for headless/isolated environments
+                arr = _generate_synthetic_wafer_map(pattern)
 
         maps[pattern] = arr
 
