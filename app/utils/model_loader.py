@@ -9,10 +9,20 @@ from loguru import logger
 from app.utils.checkpoint_manager import (
     DEFAULT_CHECKPOINT_PATH,
     EXPECTED_CHECKPOINT_SHA256,
+    compute_file_sha256,
     ensure_checkpoint_available,
     verify_checkpoint_integrity,
 )
 from src.models.custom_cnn import CustomWaferCNN
+
+__all__ = [
+    "DEFAULT_CHECKPOINT_PATH",
+    "EXPECTED_CHECKPOINT_SHA256",
+    "compute_file_sha256",
+    "ensure_checkpoint_available",
+    "load_frozen_model",
+    "verify_checkpoint_integrity",
+]
 
 # Global singleton cache for non-streamlit contexts or fallback
 _CACHED_MODEL: CustomWaferCNN | None = None
