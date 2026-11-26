@@ -1,0 +1,570 @@
+{
+  "evaluation_name": "final_held_out_test_evaluation",
+  "timestamp_utc": "2026-11-21T05:48:52.451323+00:00",
+  "model_architecture": "CustomWaferCNN",
+  "checkpoint_path": "models\\checkpoints\\exp1_custom_cnn_baseline_best.pt",
+  "checkpoint_sha256": "b9df80c522dd4ac834945587becc53a31f92108c97e17afe222914017ddaa1f8",
+  "checkpoint_best_epoch": 24,
+  "checkpoint_val_macro_f1": 0.8861,
+  "parameters": {
+    "total": 520681,
+    "trainable": 0
+  },
+  "dataset_metadata": {
+    "dataset_file": "data\\interim\\labeled_wafers.pkl",
+    "splits_file": "data\\interim\\split_indices.json",
+    "split_name": "group_stratified_70_15_15",
+    "test_sample_count": 24705,
+    "test_lot_count": 1537,
+    "lot_leakage_verified": true
+  },
+  "system_environment": {
+    "python_version": "3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]",
+    "torch_version": "2.6.0+cu124",
+    "cuda_available": true,
+    "cuda_device_name": "NVIDIA GeForce RTX 2050",
+    "os_platform": "Windows-11-10.0.26200-SP0"
+  },
+  "global_metrics": {
+    "accuracy": 0.9762,
+    "macro_precision": 0.8909,
+    "macro_recall": 0.8622,
+    "macro_f1": 0.8746,
+    "weighted_f1": 0.9761,
+    "clean_wafer_false_alarms": 200,
+    "clean_wafer_total": 21061,
+    "clean_wafer_false_alarm_rate": 0.0095
+  },
+  "efficiency_benchmarks": {
+    "model_loading_seconds": 0.4017,
+    "warmup_seconds": 1.6569,
+    "total_gpu_inference_seconds": 13.3665,
+    "gpu_average_batch_latency_ms": 20.909,
+    "gpu_average_wafer_latency_ms": 0.1634,
+    "gpu_median_wafer_latency_ms": 0.1589,
+    "gpu_throughput_wafers_per_sec": 1848.28,
+    "gpu_peak_allocated_vram_mb": 148.11,
+    "gpu_peak_reserved_vram_mb": 154.0,
+    "cpu_average_wafer_latency_ms": 3.6098,
+    "cpu_throughput_wafers_per_sec": 274.47
+  },
+  "confidence_and_calibration": {
+    "mean_confidence_overall": 0.9925,
+    "mean_confidence_correct": 0.9958,
+    "mean_confidence_incorrect": 0.8597,
+    "percentiles": {
+      "p10": 0.9997955918312073,
+      "p25": 0.9999996423721313,
+      "median": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p99": 1.0
+    },
+    "calibration": {
+      "num_bins": 15,
+      "ece": 0.0164,
+      "mce": 0.2645,
+      "bins": [
+        {
+          "bin_index": 5,
+          "range": [
+            0.3333,
+            0.4
+          ],
+          "count": 4,
+          "proportion": 0.0002,
+          "accuracy": 0.25,
+          "confidence": 0.3685,
+          "error": 0.1185
+        },
+        {
+          "bin_index": 6,
+          "range": [
+            0.4,
+            0.4667
+          ],
+          "count": 16,
+          "proportion": 0.0006,
+          "accuracy": 0.4375,
+          "confidence": 0.4455,
+          "error": 0.008
+        },
+        {
+          "bin_index": 7,
+          "range": [
+            0.4667,
+            0.5333
+          ],
+          "count": 45,
+          "proportion": 0.0018,
+          "accuracy": 0.4889,
+          "confidence": 0.5077,
+          "error": 0.0188
+        },
+        {
+          "bin_index": 8,
+          "range": [
+            0.5333,
+            0.6
+          ],
+          "count": 60,
+          "proportion": 0.0024,
+          "accuracy": 0.4333,
+          "confidence": 0.5694,
+          "error": 0.136
+        },
+        {
+          "bin_index": 9,
+          "range": [
+            0.6,
+            0.6667
+          ],
+          "count": 70,
+          "proportion": 0.0028,
+          "accuracy": 0.6143,
+          "confidence": 0.6334,
+          "error": 0.0191
+        },
+        {
+          "bin_index": 10,
+          "range": [
+            0.6667,
+            0.7333
+          ],
+          "count": 80,
+          "proportion": 0.0032,
+          "accuracy": 0.475,
+          "confidence": 0.7001,
+          "error": 0.2251
+        },
+        {
+          "bin_index": 11,
+          "range": [
+            0.7333,
+            0.8
+          ],
+          "count": 86,
+          "proportion": 0.0035,
+          "accuracy": 0.6047,
+          "confidence": 0.7665,
+          "error": 0.1618
+        },
+        {
+          "bin_index": 12,
+          "range": [
+            0.8,
+            0.8667
+          ],
+          "count": 117,
+          "proportion": 0.0047,
+          "accuracy": 0.5726,
+          "confidence": 0.8333,
+          "error": 0.2607
+        },
+        {
+          "bin_index": 13,
+          "range": [
+            0.8667,
+            0.9333
+          ],
+          "count": 193,
+          "proportion": 0.0078,
+          "accuracy": 0.6373,
+          "confidence": 0.9018,
+          "error": 0.2645
+        },
+        {
+          "bin_index": 14,
+          "range": [
+            0.9333,
+            1.0
+          ],
+          "count": 24034,
+          "proportion": 0.9728,
+          "accuracy": 0.9876,
+          "confidence": 0.9993,
+          "error": 0.0117
+        }
+      ]
+    }
+  },
+  "per_class_metrics": {
+    "none": {
+      "class_index": 0,
+      "support": 21061,
+      "true_positives": 20861,
+      "false_positives": 206,
+      "false_negatives": 200,
+      "precision": 0.9902,
+      "recall": 0.9905,
+      "f1": 0.9904,
+      "escapes_to_clean": 0,
+      "escapes_to_other_defects": 0,
+      "clean_escape_rate": 0.0
+    },
+    "Center": {
+      "class_index": 1,
+      "support": 613,
+      "true_positives": 568,
+      "false_positives": 52,
+      "false_negatives": 45,
+      "precision": 0.9161,
+      "recall": 0.9266,
+      "f1": 0.9213,
+      "escapes_to_clean": 30,
+      "escapes_to_other_defects": 15,
+      "clean_escape_rate": 0.0489
+    },
+    "Donut": {
+      "class_index": 2,
+      "support": 79,
+      "true_positives": 66,
+      "false_positives": 7,
+      "false_negatives": 13,
+      "precision": 0.9041,
+      "recall": 0.8354,
+      "f1": 0.8684,
+      "escapes_to_clean": 0,
+      "escapes_to_other_defects": 13,
+      "clean_escape_rate": 0.0
+    },
+    "Edge-Loc": {
+      "class_index": 3,
+      "support": 741,
+      "true_positives": 627,
+      "false_positives": 119,
+      "false_negatives": 114,
+      "precision": 0.8405,
+      "recall": 0.8462,
+      "f1": 0.8433,
+      "escapes_to_clean": 63,
+      "escapes_to_other_defects": 51,
+      "clean_escape_rate": 0.085
+    },
+    "Edge-Ring": {
+      "class_index": 4,
+      "support": 1383,
+      "true_positives": 1355,
+      "false_positives": 34,
+      "false_negatives": 28,
+      "precision": 0.9755,
+      "recall": 0.9798,
+      "f1": 0.9776,
+      "escapes_to_clean": 13,
+      "escapes_to_other_defects": 15,
+      "clean_escape_rate": 0.0094
+    },
+    "Loc": {
+      "class_index": 5,
+      "support": 513,
+      "true_positives": 400,
+      "false_positives": 137,
+      "false_negatives": 113,
+      "precision": 0.7449,
+      "recall": 0.7797,
+      "f1": 0.7619,
+      "escapes_to_clean": 61,
+      "escapes_to_other_defects": 52,
+      "clean_escape_rate": 0.1189
+    },
+    "Random": {
+      "class_index": 6,
+      "support": 124,
+      "true_positives": 112,
+      "false_positives": 14,
+      "false_negatives": 12,
+      "precision": 0.8889,
+      "recall": 0.9032,
+      "f1": 0.896,
+      "escapes_to_clean": 0,
+      "escapes_to_other_defects": 12,
+      "clean_escape_rate": 0.0
+    },
+    "Scratch": {
+      "class_index": 7,
+      "support": 170,
+      "true_positives": 109,
+      "false_positives": 18,
+      "false_negatives": 61,
+      "precision": 0.8583,
+      "recall": 0.6412,
+      "f1": 0.734,
+      "escapes_to_clean": 39,
+      "escapes_to_other_defects": 22,
+      "clean_escape_rate": 0.2294
+    },
+    "Near-full": {
+      "class_index": 8,
+      "support": 21,
+      "true_positives": 18,
+      "false_positives": 2,
+      "false_negatives": 3,
+      "precision": 0.9,
+      "recall": 0.8571,
+      "f1": 0.878,
+      "escapes_to_clean": 0,
+      "escapes_to_other_defects": 3,
+      "clean_escape_rate": 0.0
+    }
+  },
+  "defect_escapes_summary": {
+    "Center": {
+      "support": 613,
+      "detected_tp": 568,
+      "clean_escapes": 30,
+      "clean_escape_rate": "4.89%",
+      "other_defect_misclassifications": 15
+    },
+    "Donut": {
+      "support": 79,
+      "detected_tp": 66,
+      "clean_escapes": 0,
+      "clean_escape_rate": "0.00%",
+      "other_defect_misclassifications": 13
+    },
+    "Edge-Loc": {
+      "support": 741,
+      "detected_tp": 627,
+      "clean_escapes": 63,
+      "clean_escape_rate": "8.50%",
+      "other_defect_misclassifications": 51
+    },
+    "Edge-Ring": {
+      "support": 1383,
+      "detected_tp": 1355,
+      "clean_escapes": 13,
+      "clean_escape_rate": "0.94%",
+      "other_defect_misclassifications": 15
+    },
+    "Loc": {
+      "support": 513,
+      "detected_tp": 400,
+      "clean_escapes": 61,
+      "clean_escape_rate": "11.89%",
+      "other_defect_misclassifications": 52
+    },
+    "Random": {
+      "support": 124,
+      "detected_tp": 112,
+      "clean_escapes": 0,
+      "clean_escape_rate": "0.00%",
+      "other_defect_misclassifications": 12
+    },
+    "Scratch": {
+      "support": 170,
+      "detected_tp": 109,
+      "clean_escapes": 39,
+      "clean_escape_rate": "22.94%",
+      "other_defect_misclassifications": 22
+    },
+    "Near-full": {
+      "support": 21,
+      "detected_tp": 18,
+      "clean_escapes": 0,
+      "clean_escape_rate": "0.00%",
+      "other_defect_misclassifications": 3
+    }
+  },
+  "confusion_matrix": [
+    [
+      20861,
+      38,
+      0,
+      65,
+      12,
+      74,
+      1,
+      10,
+      0
+    ],
+    [
+      30,
+      568,
+      1,
+      0,
+      1,
+      10,
+      3,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      66,
+      0,
+      0,
+      11,
+      1,
+      1,
+      0
+    ],
+    [
+      63,
+      2,
+      0,
+      627,
+      19,
+      22,
+      5,
+      3,
+      0
+    ],
+    [
+      13,
+      0,
+      0,
+      15,
+      1355,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      61,
+      9,
+      5,
+      33,
+      0,
+      400,
+      2,
+      3,
+      0
+    ],
+    [
+      0,
+      1,
+      1,
+      4,
+      1,
+      2,
+      112,
+      1,
+      2
+    ],
+    [
+      39,
+      0,
+      0,
+      2,
+      1,
+      18,
+      1,
+      109,
+      0
+    ],
+    [
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      18
+    ]
+  ],
+  "confusion_matrix_normalized": [
+    [
+      0.9905,
+      0.0018,
+      0.0,
+      0.0031,
+      0.0006,
+      0.0035,
+      0.0,
+      0.0005,
+      0.0
+    ],
+    [
+      0.0489,
+      0.9266,
+      0.0016,
+      0.0,
+      0.0016,
+      0.0163,
+      0.0049,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.8354,
+      0.0,
+      0.0,
+      0.1392,
+      0.0127,
+      0.0127,
+      0.0
+    ],
+    [
+      0.085,
+      0.0027,
+      0.0,
+      0.8462,
+      0.0256,
+      0.0297,
+      0.0067,
+      0.004,
+      0.0
+    ],
+    [
+      0.0094,
+      0.0,
+      0.0,
+      0.0108,
+      0.9798,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.1189,
+      0.0175,
+      0.0097,
+      0.0643,
+      0.0,
+      0.7797,
+      0.0039,
+      0.0058,
+      0.0
+    ],
+    [
+      0.0,
+      0.0081,
+      0.0081,
+      0.0323,
+      0.0081,
+      0.0161,
+      0.9032,
+      0.0081,
+      0.0161
+    ],
+    [
+      0.2294,
+      0.0,
+      0.0,
+      0.0118,
+      0.0059,
+      0.1059,
+      0.0059,
+      0.6412,
+      0.0
+    ],
+    [
+      0.0,
+      0.0952,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0476,
+      0.0,
+      0.8571
+    ]
+  ]
+}

@@ -152,12 +152,21 @@ def run_startup_healthcheck(config: AppConfig | None = None) -> dict[str, Any]:
 
     logger.info("Running WaferVision AI startup health check...")
 
-    # 1. Checkpoint existence
+    # 1. Checkpoint existence and automated retrieval
     if not config.checkpoint_path.exists():
-        raise CheckpointNotFoundError(
-            f"Checkpoint not found at: {config.checkpoint_path.resolve()}\n"
-            "Ensure the model checkpoint file is placed in models/checkpoints/ or set WAFER_CHECKPOINT_PATH."
-        )
+        from app.utils.checkpoint_manager import ensure_checkpoint_available
+
+        try:
+            ensure_checkpoint_available(
+                checkpoint_path=config.checkpoint_path,
+                expected_sha256=config.expected_sha256,
+            )
+        except Exception as e:
+            raise CheckpointNotFoundError(
+                f"Checkpoint not found at: {config.checkpoint_path.resolve()}\n"
+                f"Automated retrieval failed: {e}\n"
+                "Ensure the model checkpoint file is placed in models/checkpoints/ or set WAFER_CHECKPOINT_PATH or WAFER_CHECKPOINT_URL."
+            ) from e
 
     # 2. Checksum verification
     from app.utils.model_loader import compute_file_sha256

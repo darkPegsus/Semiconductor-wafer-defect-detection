@@ -1,8 +1,11 @@
 # ==============================================================================
 # Semiconductor Wafer Defect Detection - Production / Runtime Dependencies
 # Python Target: 3.12
-# Platform: Windows 11 / Linux (CUDA 12.4+ supported)
+# Platform: Windows 11 / Linux (CPU & CUDA 12.4+ supported)
 # ==============================================================================
+
+# Prioritize lightweight CPU-only PyTorch wheels for cloud deployment
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 # Deep Learning Framework
 # Note for GPU acceleration with CUDA 12.4:

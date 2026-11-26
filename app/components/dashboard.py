@@ -84,7 +84,9 @@ def render_performance_dashboard() -> None:
     # Per-Class Performance Table
     st.markdown("#### 📋 Complete Per-Class Held-Out Test Breakdown")
 
-    metrics_json_path = Path("data/interim/figures/final_test_metrics.json")
+    metrics_json_path = Path("app/assets/benchmark/final_test_metrics.json")
+    if not metrics_json_path.exists():
+        metrics_json_path = Path("data/interim/figures/final_test_metrics.json")
     if metrics_json_path.exists():
         with open(metrics_json_path) as f:
             metrics_data = json.load(f)
@@ -137,7 +139,9 @@ def render_performance_dashboard() -> None:
 
     # Confusion Matrix Image
     st.markdown("#### 🔲 Held-Out Test Confusion Matrix Heatmap")
-    cm_img_path = Path("data/interim/figures/final_test_confusion_matrix.png")
+    cm_img_path = Path("app/assets/benchmark/final_test_confusion_matrix.png")
+    if not cm_img_path.exists():
+        cm_img_path = Path("data/interim/figures/final_test_confusion_matrix.png")
     if cm_img_path.exists():
         st.image(
             str(cm_img_path),

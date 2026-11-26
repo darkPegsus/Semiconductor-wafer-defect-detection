@@ -385,6 +385,16 @@ Open `http://localhost:8501` in your browser.
 WaferVision AI can be configured via environment variables:
 - `WAFER_DEVICE`: Force target execution device (`auto`, `cuda`, or `cpu`). Defaults to `auto`.
 - `WAFER_CHECKPOINT_PATH`: Override default checkpoint path. Defaults to `models/checkpoints/exp1_custom_cnn_baseline_best.pt`.
+- `WAFER_CHECKPOINT_URL`: Override download mirror URL for automated cloud checkpoint retrieval. Defaults to GitHub Release `v1.0.0` asset.
+
+### Cloud Deployment (Streamlit Community Cloud)
+
+WaferVision AI is architected and tested for deployment on [Streamlit Community Cloud](https://share.streamlit.io):
+- **Entrypoint:** `app/main.py`
+- **Runtime:** Python 3.12 (Headless CPU container)
+- **Model Checkpoint:** Automated retrieval with SHA-256 integrity verification (`b9df80c5...`) from public GitHub Release `v1.0.0`.
+- **Benchmark Assets:** Self-contained evaluation reporting in `app/assets/benchmark/`.
+- **Deployment Guide:** Complete preparation and launch instructions are documented in [`docs/deployment/streamlit_community_cloud.md`](docs/deployment/streamlit_community_cloud.md).
 
 ### Key Capabilities & UI Design:
 - **Clean Light Industrial Interface:** Professional high-contrast aesthetic (`#f8fafc` canvas, `#ffffff` panels, `#0f172a` typography, `#0284c7` accents) designed for cleanroom operator stations and laptop displays.

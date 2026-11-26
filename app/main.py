@@ -67,7 +67,20 @@ def main():
     try:
         model, metadata, device = get_model()
     except Exception as e:
-        st.error(f"❌ Critical Error loading model checkpoint: {e}")
+        st.error(f"❌ Critical Error initializing inspection engine: {e}")
+        st.markdown(
+            """
+            <div style="background-color: #fff1f2; border: 1px solid #fecdd3; border-radius: 8px; padding: 16px; margin-top: 12px; color: #9f1239;">
+                <strong>Deployment Diagnostic Notice:</strong>
+                <ul style="margin-top: 8px; margin-bottom: 0; font-size: 0.9rem;">
+                    <li>Ensure the frozen model checkpoint is available at <code>models/checkpoints/exp1_custom_cnn_baseline_best.pt</code>.</li>
+                    <li>If deploying on Streamlit Community Cloud, verify that the public GitHub Release asset is attached to release <code>v1.0.0</code> or configure environment variable <code>WAFER_CHECKPOINT_URL</code>.</li>
+                    <li>Verify the expected SHA-256 digest: <code>b9df80c522dd4ac834945587becc53a31f92108c97e17afe222914017ddaa1f8</code>.</li>
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         st.stop()
 
     # -------------------------------------------------------------------------
